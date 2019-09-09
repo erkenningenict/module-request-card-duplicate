@@ -1,0 +1,25 @@
+.tmp
+.vscode
+coverage
+dist
+# mocks
+node_modules
+# src
+.editorconfig
+.gitignore
+.prettierignore
+.vcmrc
+angular-cli.json
+CONTRIBUTING.md
+CHANGELOG.md
+package.json
+package-lock.json
+README.md
+tslint.json
+wallaby.js
+src/*.stories.ts
+.stories.ts
+.out/*
+.storybook/*
+.cache
+public

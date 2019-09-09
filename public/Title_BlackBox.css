@@ -1,0 +1,20 @@
+.c_head_black_box h2.c_title, .c_head_black_box h2.c_title input {
+	color: #000;
+    background: #eee;
+    padding: 10px 15px;
+	text-transform: uppercase;
+	margin-top: 1px;
+}
+.c_contentpane {
+	margin-bottom: 22px;
+}
+
+@media (max-width: 767px) {
+	.c_head_black_box h2.c_title, .c_head_black_box h2.c_title input {
+		padding-left: 15px;
+	}
+	.c_contentpane {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}

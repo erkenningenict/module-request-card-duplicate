@@ -1,0 +1,104 @@
+{
+  "data": {
+    "my": {
+      "Certificeringen": [
+        {
+          "CertificeringID": "23262",
+          "NummerWeergave": "12.96.0003958",
+          "BeginDatum": 852076800000,
+          "EindDatum": 1009843200000,
+          "Status": "Verlopen",
+          "Certificaat": { "Naam": "Uitvoeren Gewasbescherming", "__typename": "Certificaat" },
+          "Passen": [],
+          "__typename": "Certificering"
+        },
+        {
+          "CertificeringID": "60338",
+          "NummerWeergave": "12.2002.0000482",
+          "BeginDatum": 1015545600000,
+          "EindDatum": 1173312000000,
+          "Status": "Verlopen",
+          "Certificaat": { "Naam": "Uitvoeren Gewasbescherming", "__typename": "Certificaat" },
+          "Passen": [],
+          "__typename": "Certificering"
+        },
+        {
+          "CertificeringID": "182926",
+          "NummerWeergave": "31.2008.0023242",
+          "BeginDatum": 1173312000000,
+          "EindDatum": 1331164800000,
+          "Status": "Verlopen",
+          "Certificaat": { "Naam": "Uitvoeren Gewasbescherming", "__typename": "Certificaat" },
+          "Passen": [
+            {
+              "PasID": "33717",
+              "DatumAanvraag": 1201737600000,
+              "DatumUitgeleverd": 1202256000000,
+              "Aantal": 1,
+              "Status": "Uitgeleverd",
+              "Geadresseerde": null,
+              "PasRetouren": [],
+              "__typename": "Pas"
+            }
+          ],
+          "__typename": "Certificering"
+        },
+        {
+          "CertificeringID": "252279",
+          "NummerWeergave": "31.2012.0005523",
+          "BeginDatum": 1331164800000,
+          "EindDatum": 1488931200000,
+          "Status": "Verlopen",
+          "Certificaat": { "Naam": "Uitvoeren Gewasbescherming", "__typename": "Certificaat" },
+          "Passen": [
+            {
+              "PasID": "110336",
+              "DatumAanvraag": 1332201600000,
+              "DatumUitgeleverd": 1332288000000,
+              "Aantal": 1,
+              "Status": "Uitgeleverd",
+              "Geadresseerde": null,
+              "PasRetouren": [],
+              "__typename": "Pas"
+            },
+            {
+              "PasID": "179494",
+              "DatumAanvraag": 1432080000000,
+              "DatumUitgeleverd": 1433289600000,
+              "Aantal": 1,
+              "Status": "Uitgeleverd",
+              "Geadresseerde": null,
+              "PasRetouren": [],
+              "__typename": "Pas"
+            }
+          ],
+          "__typename": "Certificering"
+        },
+        {
+          "CertificeringID": "308794",
+          "NummerWeergave": "31.2016.0007449",
+          "BeginDatum": 1488931200000,
+          "EindDatum": 1646697600000,
+          "Status": "Geldig",
+          "Certificaat": { "Naam": "Uitvoeren gewasbesch. + KBA", "__typename": "Certificaat" },
+          "Passen": [
+            {
+              "PasID": "198444",
+              "DatumAanvraag": 1458604800000,
+              "DatumUitgeleverd": 1481673600000,
+              "Aantal": 1,
+              "Status": "Uitgeleverd",
+              "Geadresseerde": null,
+              "PasRetouren": [
+                { "PasID": 198444, "DatumRetour": 1528761600000, "__typename": "PasRetour" }
+              ],
+              "__typename": "Pas"
+            }
+          ],
+          "__typename": "Certificering"
+        }
+      ],
+      "__typename": "My"
+    }
+  }
+}

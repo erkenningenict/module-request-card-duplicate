@@ -1,0 +1,29 @@
+{
+  "expression": "/graphql",
+  "body": "(.*)getMy(.*)",
+  "method": "POST",
+  "name": "my",
+  "responses": {
+    "oneValid": {
+      "default": true,
+      "status": 200,
+      "delay": 200,
+      "file": "mocks/my/data/oneValid.json"
+    },
+    "twoValid": {
+      "status": 200,
+      "delay": 200,
+      "file": "mocks/my/data/twoValid.json"
+    },
+    "validInFuture": {
+      "status": 200,
+      "delay": 200,
+      "file": "mocks/my/data/validInFuture.json"
+    },
+    "getUnauthenticated": {
+      "status": 200,
+      "delay": 200,
+      "file": "mocks/my/data/unauthenticated.json"
+    }
+  }
+}
