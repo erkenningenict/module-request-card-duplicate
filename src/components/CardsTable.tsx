@@ -1,16 +1,22 @@
 import React from 'react';
-import { Alert, TableResponsive } from '@erkenningen/ui';
+import { Alert, TableResponsive, toDutchDate } from '@erkenningen/ui';
 import { ICertificering, IPas } from '../models/types';
-import PassRow from './PassRow';
+import CardRow from './CardRow';
 
-const PassTable: React.FC<{ licenseDetails: ICertificering }> = (props) => {
+const CardsTable: React.FC<{ licenseDetails: ICertificering }> = (props) => {
   if (!props.licenseDetails) {
     return null;
   }
   return (
     <>
       {props.licenseDetails.Passen.length === 0 && (
-        <Alert>U heeft voor deze licentie (nog) geen pas ontvangen.</Alert>
+        <Alert>
+          U heeft voor deze licentie (nog) geen pas ontvangen.{' '}
+          <strong>
+            U ontvangt uw pasje automatisch 3 maanden voor ingangsdatum{' '}
+            {toDutchDate(props.licenseDetails.BeginDatum)} op uw woonadres.
+          </strong>
+        </Alert>
       )}
       {props.licenseDetails.Passen.length > 0 && (
         <>
@@ -29,12 +35,8 @@ const PassTable: React.FC<{ licenseDetails: ICertificering }> = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {props.licenseDetails.Passen.map((pass: IPas) => (
-                  <PassRow
-                    key={pass.PasID}
-                    pass={pass}
-                    license={props.licenseDetails}
-                  ></PassRow>
+                {props.licenseDetails.Passen.map((card: IPas) => (
+                  <CardRow key={card.PasID} card={card} license={props.licenseDetails}></CardRow>
                 ))}
               </tbody>
             </table>
@@ -45,4 +47,4 @@ const PassTable: React.FC<{ licenseDetails: ICertificering }> = (props) => {
   );
 };
 
-export default PassTable;
+export default CardsTable;

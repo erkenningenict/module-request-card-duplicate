@@ -1,11 +1,11 @@
 {
-  "name": "request-pass-duplicate",
+  "name": "request-card-duplicate",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "3.1.0",
     "@erkenningen/config": "^1.0.7",
-    "@erkenningen/ui": "2.0.0",
+    "@erkenningen/ui": "2.0.3",
     "apollo-boost": "^0.4.4",
     "core-js": "3.1.4",
     "date-fns": "2.1.0",

@@ -1,9 +1,9 @@
 import React from 'react';
-import { toDutchDate } from '@erkenningen/ui';
 import { ICertificering, IPas, IPasRetour } from '../models/types';
+import { toDutchDate } from '@erkenningen/ui';
 
-const PassRow: React.FC<{
-  pass: IPas;
+const CardRow: React.FC<{
+  card: IPas;
   license: ICertificering;
 }> = (props) => {
   return (
@@ -13,18 +13,21 @@ const PassRow: React.FC<{
         <td>
           {props.license.Certificaat.Naam} (geldig vanaf: {toDutchDate(props.license.BeginDatum)})
         </td>
-        <td>{toDutchDate(props.pass.DatumAanvraag)}</td>
-        <td>{toDutchDate(props.pass.DatumUitgeleverd)}</td>
+        <td>{toDutchDate(props.card.DatumAanvraag)}</td>
         <td>
-          {props.pass.PasRetouren.map(
+          {toDutchDate(props.card.DatumUitgeleverd, { defaultValue: 'Nog niet uitgeleverd' })}
+        </td>
+        <td>
+          {props.card.PasRetouren.map(
             (passReturn: IPasRetour) =>
               `Post onbestelbaar, retour ontvangen op ${toDutchDate(passReturn.DatumRetour)}`,
           )}
+          {props.card.PasRetouren.length === 0 && 'Er zijn geen retouren ontvangen'}
         </td>
-        <td>{props.pass.Status}</td>
-        <td>{props.pass.Aantal}</td>
+        <td>{props.card.Status}</td>
+        <td>{props.card.Aantal}</td>
       </tr>
     </>
   );
 };
-export default PassRow;
+export default CardRow;

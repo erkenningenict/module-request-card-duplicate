@@ -1,11 +1,15 @@
 {
   "expression": "/graphql",
-  "body": "(.*)getMy(.*)",
+  "body": "(.*)query getMy(.*)",
   "method": "POST",
   "name": "my",
   "responses": {
+    "noValid": {
+      "status": 200,
+      "delay": 200,
+      "file": "mocks/my/data/noValid.json"
+    },
     "oneValid": {
-      "default": true,
       "status": 200,
       "delay": 200,
       "file": "mocks/my/data/oneValid.json"
@@ -16,14 +20,14 @@
       "file": "mocks/my/data/twoValid.json"
     },
     "validInFuture": {
+      "default": true,
       "status": 200,
       "delay": 200,
       "file": "mocks/my/data/validInFuture.json"
     },
-    "getUnauthenticated": {
-      "status": 200,
-      "delay": 200,
-      "file": "mocks/my/data/unauthenticated.json"
+    "500": {
+      "status": 500,
+      "delay": 200
     }
   }
 }

@@ -1,0 +1,19 @@
+{
+  "expression": "/graphql",
+  "body": "(.*)mutation requestDuplicate(.*)",
+  "method": "POST",
+  "name": "requestDuplicate",
+  "responses": {
+    "200": {
+      "default": "true",
+      "status": 200,
+      "delay": 200,
+      "file": "mocks/requestDuplicate/data/200.json"
+    },
+    "400": {
+      "status": 400,
+      "delay": 200,
+      "file": "mocks/requestDuplicate/data/400.json"
+    }
+  }
+}

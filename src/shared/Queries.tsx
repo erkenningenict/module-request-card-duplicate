@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
-export const GET_MY_LICENSES = gql`
-  query getMy {
+export const GET_MY_LICENSES_AND_DUPLICATE_PRICE = gql`
+  query getMyAndDuplicatePrice {
     my {
       Certificeringen(inclusiefPassen: true) {
         CertificeringID
@@ -24,6 +24,24 @@ export const GET_MY_LICENSES = gql`
             DatumRetour
           }
         }
+      }
+    }
+    tariefDuplicaat {
+      TotaalExtBtw
+    }
+  }
+`;
+
+export const ORDER_DUPLICATE = gql`
+  mutation requestDuplicate($input: requestDuplicateInput!) {
+    requestDuplicate(input: $input) {
+      invoiceLink
+      cards {
+        PasID
+        CertificeringID
+        DatumAanvraag
+        Status
+        Aantal
       }
     }
   }

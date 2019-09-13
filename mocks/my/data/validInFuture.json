@@ -77,7 +77,7 @@
         {
           "CertificeringID": "308794",
           "NummerWeergave": "31.2016.0007449",
-          "BeginDatum": 1577833200000,
+          "BeginDatum": 1580511600000,
           "EindDatum": 1646697600000,
           "Status": "Geldig",
           "Certificaat": { "Naam": "Uitvoeren gewasbesch. + KBA", "__typename": "Certificaat" },
@@ -86,6 +86,10 @@
         }
       ],
       "__typename": "My"
+    },
+    "tariefDuplicaat": {
+      "TotaalExtBtw": 5,
+      "__typename": "tariefDuplicaat"
     }
   }
 }

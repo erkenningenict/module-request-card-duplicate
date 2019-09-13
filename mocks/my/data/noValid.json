@@ -1,0 +1,12 @@
+{
+  "data": {
+    "my": {
+      "Certificeringen": [],
+      "__typename": "My"
+    },
+    "tariefDuplicaat": {
+      "TotaalExtBtw": 5,
+      "__typename": "tariefDuplicaat"
+    }
+  }
+}
