@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9ba003be-aa6e-444e-a16e-6eb730b91ada/deploy-status)](https://app.netlify.com/sites/erkenningen-module-request-card-duplicate/deploys)
+
 # Erkenningen module in Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
