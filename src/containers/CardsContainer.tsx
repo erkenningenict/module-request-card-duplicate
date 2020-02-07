@@ -78,23 +78,26 @@ const CardsContainer: React.FC<{
               }}
             ></Select>
             {selectedLicense && <CardsTable licenseDetails={selectedLicense}></CardsTable>}
-
-            {selectedLicense && selectedLicense.Passen.length > 0 && (
-              <>
-                <p>
-                  Wilt u een duplicaat pas aanvragen? Kies dan het aantal en klik op bestellen. U
-                  ontvangt dan een factuur die met iDeal betaald kan worden. Na betaling ontvangt u
-                  uw duplicaat pas binnen enkele dagen op uw woonadres.
-                </p>
-                {selectedLicense && invoiceLink === '' && (
-                  <OrderDuplicate
-                    license={selectedLicense}
-                    priceExVat={props.priceExVat}
-                    onInvoiceLink={(e: string) => setInvoiceLink(e)}
-                  ></OrderDuplicate>
-                )}
-              </>
-            )}
+            {console.log(selectedLicense)}
+            {selectedLicense &&
+              (selectedLicense.Passen.length > 0 ||
+                (new Date(selectedLicense.BeginDatum) <= new Date() &&
+                  new Date(selectedLicense.EindDatum) >= new Date())) && (
+                <>
+                  <p>
+                    Wilt u een duplicaat pas aanvragen? Kies dan het aantal en klik op bestellen. U
+                    ontvangt dan een factuur die met iDeal betaald kan worden. Na betaling ontvangt
+                    u uw duplicaat pas binnen enkele dagen op uw woonadres.
+                  </p>
+                  {selectedLicense && invoiceLink === '' && (
+                    <OrderDuplicate
+                      license={selectedLicense}
+                      priceExVat={props.priceExVat}
+                      onInvoiceLink={(e: string) => setInvoiceLink(e)}
+                    ></OrderDuplicate>
+                  )}
+                </>
+              )}
           </>
         )}
       </Panel>

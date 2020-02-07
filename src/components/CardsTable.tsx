@@ -9,15 +9,16 @@ const CardsTable: React.FC<{ licenseDetails: ICertificering }> = (props) => {
   }
   return (
     <>
-      {props.licenseDetails.Passen.length === 0 && (
-        <Alert>
-          U heeft voor deze licentie (nog) geen pas ontvangen.{' '}
-          <strong>
-            U ontvangt uw pasje automatisch 3 maanden voor ingangsdatum{' '}
-            {toDutchDate(props.licenseDetails.BeginDatum)} op uw woonadres.
-          </strong>
-        </Alert>
-      )}
+      {props.licenseDetails.Passen.length === 0 &&
+        new Date(props.licenseDetails.BeginDatum) >= new Date() && (
+          <Alert>
+            U heeft voor deze licentie (nog) geen pas ontvangen.{' '}
+            <strong>
+              U ontvangt uw pasje automatisch 3 maanden voor ingangsdatum{' '}
+              {toDutchDate(props.licenseDetails.BeginDatum)} op uw woonadres.
+            </strong>
+          </Alert>
+        )}
       {props.licenseDetails.Passen.length > 0 && (
         <>
           <h4>Passen reeds door u ontvangen voor de gekozen licentie:</h4>

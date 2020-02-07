@@ -20,10 +20,15 @@
       "file": "mocks/my/data/twoValid.json"
     },
     "validInFuture": {
-      "default": true,
       "status": 200,
       "delay": 200,
       "file": "mocks/my/data/validInFuture.json"
+    },
+    "currentlyValidLicense-NoCardsSendYet": {
+      "default": true,
+      "status": 200,
+      "delay": 200,
+      "file": "mocks/my/data/currentlyValidLicense-NoCardsSendYet.json"
     },
     "500": {
       "status": 500,
