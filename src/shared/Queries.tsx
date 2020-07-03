@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 export const GET_MY_LICENSES_AND_DUPLICATE_PRICE = gql`
   query getMyAndDuplicatePrice {
     my {
-      Certificeringen(inclusiefPassen: true) {
+      Certificeringen(inclusiefPassen: true, alleenGeldig: true) {
         CertificeringID
         NummerWeergave
         BeginDatum
