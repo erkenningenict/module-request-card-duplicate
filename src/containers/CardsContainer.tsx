@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { Panel, Select, toDutchDate, Button, Alert } from '@erkenningen/ui';
+import { Alert } from '@erkenningen/ui/components/alert';
+import { Select } from '@erkenningen/ui/components/select';
+import { Panel } from '@erkenningen/ui/layout/panel';
+import { Button } from '@erkenningen/ui/components/button';
+import { toDutchDate } from '@erkenningen/ui/utils';
 import CardsTable from '../components/CardsTable';
 import './CardsContainer.css';
 import { ICertificering } from '../models/types';

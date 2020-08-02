@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Select, Button, Alert, toDutchMoney } from '@erkenningen/ui';
+import { Alert } from '@erkenningen/ui/components/alert';
+import { Select } from '@erkenningen/ui/components/select';
+import { Button } from '@erkenningen/ui/components/button';
+import { toDutchMoney } from '@erkenningen/ui/utils';
 import { ICertificering, IRequestDuplicate } from '../models/types';
 import './OrderDuplicate.css';
 import { useMutation } from 'react-apollo';

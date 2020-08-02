@@ -1,5 +1,7 @@
 import React from 'react';
-import { Alert, TableResponsive, toDutchDate } from '@erkenningen/ui';
+import { Alert } from '@erkenningen/ui/components/alert';
+import { TableResponsive } from '@erkenningen/ui/layout/table';
+import { toDutchDate } from '@erkenningen/ui/utils';
 import { ICertificering, IPas } from '../models/types';
 import CardRow from './CardRow';
 

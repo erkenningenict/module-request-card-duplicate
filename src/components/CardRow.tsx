@@ -1,6 +1,6 @@
 import React from 'react';
 import { ICertificering, IPas, IPasRetour } from '../models/types';
-import { toDutchDate } from '@erkenningen/ui';
+import { toDutchDate } from '@erkenningen/ui/utils';
 
 const CardRow: React.FC<{
   card: IPas;

@@ -8,14 +8,13 @@ import { ERKENNINGEN_GRAPHQL_API_URL, ERKENNINGEN_SITE_TYPE } from '@erkenningen
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import ThemeContext from '@erkenningen/ui2/dist/es/src/layout/theme/ThemeContext';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 import { App } from './App';
-import { ThemeContext } from '@erkenningen/ui';
+import { ThemeContext, ThemeBureauErkenningen } from '@erkenningen/ui/layout/theme';
 
 const cache = new InMemoryCache();
 
@@ -29,9 +28,11 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <ThemeContext.Provider value={{ mode: ERKENNINGEN_SITE_TYPE }}>
-      <App />
-    </ThemeContext.Provider>
+    <ThemeBureauErkenningen>
+      <ThemeContext.Provider value={{ mode: ERKENNINGEN_SITE_TYPE }}>
+        <App />
+      </ThemeContext.Provider>
+    </ThemeBureauErkenningen>
   </ApolloProvider>,
-  document.getElementById('module-certificates-info'),
+  document.getElementById('erkenningen-module-request-card-duplicate'),
 );
