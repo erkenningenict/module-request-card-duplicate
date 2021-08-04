@@ -25,7 +25,7 @@ const CardsContainer: React.FC<{
     if (selectedLicenseId) {
       setSelectedLicense(props.list.find((c) => c.CertificeringID === selectedLicenseId));
     }
-  }, [selectedLicenseId]);
+  }, [props.list, selectedLicenseId]);
 
   const [invoiceLink, setInvoiceLink] = useState<string>('');
   if (!props.list) {
@@ -90,6 +90,7 @@ const CardsContainer: React.FC<{
               placeholder="Kies licentie"
               value={selectedLicenseId}
               onChange={(e) => {
+                setSelectedLicense(props.list.find((c) => c.CertificeringID === selectedLicenseId));
                 setSelectedLicenseId(e.value);
               }}
             ></Select>
