@@ -8,6 +8,7 @@ import CardsTable from '../components/CardsTable';
 import './CardsContainer.css';
 import { ICertificering } from '../models/types';
 import OrderDuplicate from '../components/OrderDuplicate';
+import { useEffect } from 'react';
 
 const CardsContainer: React.FC<{
   list: ICertificering[];
@@ -16,6 +17,16 @@ const CardsContainer: React.FC<{
   const [selectedLicense, setSelectedLicense] = useState(
     props.list.length >= 0 ? props.list[0] : undefined,
   );
+  const [selectedLicenseId, setSelectedLicenseId] = useState(
+    props.list.length >= 0 ? props.list[0].CertificeringID : undefined,
+  );
+
+  useEffect(() => {
+    if (selectedLicenseId) {
+      setSelectedLicense(props.list.find((c) => c.CertificeringID === selectedLicenseId));
+    }
+  }, [selectedLicenseId]);
+
   const [invoiceLink, setInvoiceLink] = useState<string>('');
   if (!props.list) {
     return null;
@@ -49,6 +60,7 @@ const CardsContainer: React.FC<{
       </Panel>
     );
   }
+
   return (
     <>
       <Panel title="Mijn Passen">
@@ -67,7 +79,7 @@ const CardsContainer: React.FC<{
             <Select
               className="fullWidth"
               options={props.list.map((license: ICertificering) => ({
-                value: license,
+                value: license.CertificeringID,
                 label: `${license.NummerWeergave} - ${
                   license.Certificaat.Naam
                 } (startdatum licentie: ${toDutchDate(
@@ -76,13 +88,12 @@ const CardsContainer: React.FC<{
             `,
               }))}
               placeholder="Kies licentie"
-              value={selectedLicense}
+              value={selectedLicenseId}
               onChange={(e) => {
-                setSelectedLicense(e.value);
+                setSelectedLicenseId(e.value);
               }}
             ></Select>
             {selectedLicense && <CardsTable licenseDetails={selectedLicense}></CardsTable>}
-            {console.log(selectedLicense)}
             {selectedLicense &&
               (selectedLicense.Passen.length > 0 ||
                 (new Date(selectedLicense.BeginDatum) <= new Date() &&
