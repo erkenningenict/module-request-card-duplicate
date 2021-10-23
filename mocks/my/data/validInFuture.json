@@ -3,10 +3,10 @@
     "my": {
       "Certificeringen": [
         {
-          "CertificeringID": "308794",
+          "CertificeringID": 308794,
           "NummerWeergave": "31.2019.0007449",
-          "BeginDatum": 1612702408000,
-          "EindDatum": 1646697600000,
+          "BeginDatum": "2030-01-31T23:00:00.000Z",
+          "EindDatum": "2035-01-31T23:00:00.000Z",
           "Status": "Geldig",
           "Certificaat": { "Naam": "Uitvoeren gewasbesch. + KBA", "__typename": "Certificaat" },
           "Passen": [],

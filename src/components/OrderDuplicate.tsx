@@ -3,61 +3,70 @@ import { Alert } from '@erkenningen/ui/components/alert';
 import { Select } from '@erkenningen/ui/components/select';
 import { Button } from '@erkenningen/ui/components/button';
 import { toDutchMoney } from '@erkenningen/ui/utils';
-import { ICertificering, IRequestDuplicate } from '../models/types';
 import './OrderDuplicate.css';
-import { useMutation } from 'react-apollo';
-import { ORDER_DUPLICATE, GET_MY_LICENSES_AND_DUPLICATE_PRICE } from '../shared/Queries';
+import {
+  CertificeringenFieldsFragment,
+  PasFieldsFragmentDoc,
+  useRequestDuplicateMutation,
+} from '../generated/graphql';
 
 const OrderDuplicate: React.FC<{
-  license: ICertificering;
+  license: CertificeringenFieldsFragment;
   priceExVat: number;
   onInvoiceLink: any;
 }> = (props) => {
   const [nrOfCards, setNrOfCards] = useState<number>(1);
-  const [requestDuplicate, { loading, data, error }] = useMutation<{
-    requestDuplicate: IRequestDuplicate;
-  }>(ORDER_DUPLICATE, {
+  const [requestDuplicate, { loading, error }] = useRequestDuplicateMutation({
     update(cache, { data: mutationResult }) {
-      const cacheData: any = cache.readQuery({ query: GET_MY_LICENSES_AND_DUPLICATE_PRICE });
-      const licenses: ICertificering[] = cacheData.my.Certificeringen;
-      const licenseToUpdate: ICertificering | undefined = licenses.find(
-        (lic: ICertificering) => lic.CertificeringID === props.license.CertificeringID,
-      );
-      if (licenseToUpdate && mutationResult) {
-        let newCard = mutationResult.requestDuplicate.cards[0];
-        newCard = {
-          ...newCard,
-          PasRetouren: [],
-        };
+      cache.modify({
+        // get the Certificering record
+        id: cache.identify(props.license),
+        fields: {
+          // update the Passen field
+          Passen(existingPassenRefs = [], { readField }) {
+            // first write the new Pas data to the cache
+            const newPasRef = cache.writeFragment({
+              data: {
+                ...mutationResult!.requestDuplicate!.cards[0],
+                // include the fields that are not returned from the server
+                PasRetouren: [],
+                DatumUitgeleverd: null,
+                Geadresseerde: null,
+              },
+              // refer to the PasFields fragment
+              fragment: PasFieldsFragmentDoc,
+            });
 
-        // update the cache (by reference)
-        licenseToUpdate.Passen.push(newCard);
-      }
+            // return the existing passen refs and the ref of the new one
+            const retVal = [...existingPassenRefs, newPasRef];
+            return retVal;
+          },
+        },
+      });
     },
   });
-  if (data) {
-    props.onInvoiceLink(data.requestDuplicate.invoiceLink);
-  }
+
   const list = [1, 2, 3, 4, 5];
   return (
     <form
-      className="form form-horizontal"
-      onSubmit={(e) => {
+      className="row form form-horizontal"
+      onSubmit={async (e) => {
         e.preventDefault();
-        requestDuplicate({
+        const res = await requestDuplicate({
           variables: {
             input: {
-              licenseIds: [+props.license.CertificeringID],
+              licenseIds: [props.license.CertificeringID],
               remark: 'Duplicaat pas',
               count: nrOfCards,
             },
           },
         });
+        props.onInvoiceLink(res.data!.requestDuplicate.invoiceLink);
       }}
     >
       <div className="form-group">
         <label className="control-label col-md-4">Aantal duplicaten bestellen</label>
-        <div className="smallSelect">
+        <div className="col-md-2">
           <Select
             options={list.map((value: number) => ({
               value,
@@ -70,12 +79,14 @@ const OrderDuplicate: React.FC<{
             }}
           ></Select>
         </div>
-        <div className="col-md-5 form-control-static">
+        <div className="col-md-6 form-control-static">
           Prijs (ex. btw): {toDutchMoney(props.priceExVat)} per stuk
         </div>
       </div>
-      <div className="col-md-offset-4">
-        <Button type="primary" buttonType="submit" label="Bestellen" disabled={loading} />
+      <div className="form-group ">
+        <div className="col-md-offset-4 col-md-8">
+          <Button type="primary" buttonType="submit" label="Bestellen" disabled={loading} />
+        </div>
       </div>
       {error && (
         <Alert type="danger" className="marginTop">
