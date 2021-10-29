@@ -4,9 +4,8 @@
       "invoiceLink": "window.open('iDeal/Factuur.aspx?SafeKey=BgVX++Z3Lm5MoXBmIgG3+mMiZJ13tufVMhluON8w2/+1v597o5zzmPmzzwf0wjtxu2hcLHFcgc/ZsSFWjO1HG4AA8/azkd5pSXvPcPLn4bVZr2GGG6ASo9x3vjT3SEt8L0cb628jmgwj5i2TOybUwxegtUEA+dy3jQRpSZiZDeY=','FactuurVenster','left=100,top=50,width=700,height=800,location=0,resizable=1,toolbar=1')",
       "cards": [
         {
-          "PasID": "257057",
-          "CertificeringID": 308794,
-          "DatumAanvraag": 1568332800000,
+          "PasID": 257057,
+          "DatumAanvraag": "2019-09-13T00:00:00.000Z",
           "Status": "Aangevraagd",
           "Aantal": 1,
           "__typename": "Pas"

@@ -6,19 +6,19 @@ import { Button } from '@erkenningen/ui/components/button';
 import { toDutchDate } from '@erkenningen/ui/utils';
 import CardsTable from '../components/CardsTable';
 import './CardsContainer.css';
-import { ICertificering } from '../models/types';
 import OrderDuplicate from '../components/OrderDuplicate';
 import { useEffect } from 'react';
+import type { CertificeringenFieldsFragment } from '../generated/graphql';
 
 const CardsContainer: React.FC<{
-  list: ICertificering[];
+  list: CertificeringenFieldsFragment[];
   priceExVat: number;
 }> = (props) => {
   const [selectedLicense, setSelectedLicense] = useState(
     props.list.length >= 0 ? props.list[0] : undefined,
   );
   const [selectedLicenseId, setSelectedLicenseId] = useState(
-    props.list.length >= 0 ? props.list[0].CertificeringID : undefined,
+    props.list.length >= 0 ? props.list[0]?.CertificeringID : undefined,
   );
 
   useEffect(() => {
@@ -61,6 +61,23 @@ const CardsContainer: React.FC<{
     );
   }
 
+  const itemTemplate = (option) => {
+    const o = props.list.find((l) => l.CertificeringID === option.value);
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', height: '60px' }}>
+        <div>
+          <strong>{o!.Certificaat!.Naam}</strong>
+        </div>
+        <div>
+          Pasnummer: <strong>{o?.NummerWeergave}</strong>
+        </div>
+        <div>
+          Geldig vanaf {toDutchDate(o!.BeginDatum)}, einddatum {toDutchDate(o!.EindDatum)}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <Panel title="Mijn Passen">
@@ -78,16 +95,17 @@ const CardsContainer: React.FC<{
             </p>
             <Select
               className="fullWidth"
-              options={props.list.map((license: ICertificering) => ({
+              options={props.list.map((license: CertificeringenFieldsFragment) => ({
                 value: license.CertificeringID,
                 label: `${license.NummerWeergave} - ${
-                  license.Certificaat.Naam
-                } (startdatum licentie: ${toDutchDate(
-                  license.BeginDatum,
-                )}, einddatum licentie: ${toDutchDate(license.EindDatum)})
+                  license!.Certificaat!.Naam
+                } (geldig vanaf: ${toDutchDate(license.BeginDatum)}, einddatum: ${toDutchDate(
+                  license.EindDatum,
+                )})
             `,
               }))}
               placeholder="Kies licentie"
+              itemTemplate={itemTemplate}
               value={selectedLicenseId}
               onChange={(e) => {
                 setSelectedLicense(props.list.find((c) => c.CertificeringID === selectedLicenseId));
@@ -96,7 +114,7 @@ const CardsContainer: React.FC<{
             ></Select>
             {selectedLicense && <CardsTable licenseDetails={selectedLicense}></CardsTable>}
             {selectedLicense &&
-              (selectedLicense.Passen.length > 0 ||
+              (selectedLicense.Passen!.length > 0 ||
                 (new Date(selectedLicense.BeginDatum) <= new Date() &&
                   new Date(selectedLicense.EindDatum) >= new Date())) && (
                 <>

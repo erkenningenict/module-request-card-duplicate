@@ -1,0 +1,49 @@
+query getMyAndDuplicatePrice {
+  my {
+    Certificeringen(inclusiefPassen: true, alleenGeldig: true) {
+      ...CertificeringenFields
+    }
+  }
+  tariefDuplicaat {
+    TotaalExtBtw
+  }
+}
+
+fragment CertificeringenFields on Certificering {
+  CertificeringID
+  NummerWeergave
+  BeginDatum
+  EindDatum
+  Status
+  Certificaat {
+    Naam
+  }
+  Passen {
+    ...PasFields
+  }
+}
+
+fragment PasFields on Pas {
+  PasID
+  DatumAanvraag
+  DatumUitgeleverd
+  Aantal
+  Status
+  Geadresseerde
+  PasRetouren {
+    PasID
+    DatumRetour
+  }
+}
+
+mutation requestDuplicate($input: requestDuplicateInput!) {
+  requestDuplicate(input: $input) {
+    invoiceLink
+    cards {
+      PasID
+      DatumAanvraag
+      Status
+      Aantal
+    }
+  }
+}

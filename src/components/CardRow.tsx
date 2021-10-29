@@ -1,33 +1,33 @@
 import React from 'react';
-import { ICertificering, IPas, IPasRetour } from '../models/types';
 import { toDutchDate } from '@erkenningen/ui/utils';
+import type { CertificeringenFieldsFragment, PasFieldsFragment } from '../generated/graphql';
 
 const CardRow: React.FC<{
-  card: IPas;
-  license: ICertificering;
+  card: PasFieldsFragment;
+  license: CertificeringenFieldsFragment;
 }> = (props) => {
   return (
-    <>
-      <tr>
-        <td>{props.license.NummerWeergave}</td>
-        <td>
-          {props.license.Certificaat.Naam} (geldig vanaf: {toDutchDate(props.license.BeginDatum)})
-        </td>
-        <td>{toDutchDate(props.card.DatumAanvraag)}</td>
-        <td>
-          {toDutchDate(props.card.DatumUitgeleverd, { defaultValue: 'Nog niet uitgeleverd' })}
-        </td>
-        <td>
-          {props.card.PasRetouren.map(
-            (passReturn: IPasRetour) =>
-              `Post onbestelbaar, retour ontvangen op ${toDutchDate(passReturn.DatumRetour)}`,
-          )}
-          {props.card.PasRetouren.length === 0 && 'Er zijn geen retouren ontvangen'}
-        </td>
-        <td>{props.card.Status}</td>
-        <td>{props.card.Aantal}</td>
-      </tr>
-    </>
+    <tr key={props.card.PasID}>
+      <td>{props.license.NummerWeergave}</td>
+      <td>
+        {props.license.Certificaat!.Naam} (geldig vanaf: {toDutchDate(props.license.BeginDatum)})
+      </td>
+      <td>{toDutchDate(props.card.DatumAanvraag)}</td>
+      <td>{toDutchDate(props.card.DatumUitgeleverd, { defaultValue: 'Nog niet uitgeleverd' })}</td>
+      <td>
+        {props.card.PasRetouren?.map(
+          (passReturn) =>
+            `Post onbestelbaar, retour ontvangen op ${
+              passReturn?.DatumRetour !== undefined
+                ? toDutchDate(passReturn!.DatumRetour)
+                : 'datum nog onbekend.'
+            }`,
+        )}
+        {props.card.PasRetouren!.length === 0 && 'Er zijn geen retouren ontvangen'}
+      </td>
+      <td>{props.card.Status}</td>
+      <td>{props.card.Aantal}</td>
+    </tr>
   );
 };
 export default CardRow;

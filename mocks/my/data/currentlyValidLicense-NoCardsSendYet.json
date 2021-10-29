@@ -3,17 +3,18 @@
     "my": {
       "Certificeringen": [
         {
-          "CertificeringID": "252279",
+          "CertificeringID": 252279,
           "NummerWeergave": "31.2012.0005523",
-          "BeginDatum": 1517439600000,
+          "BeginDatum": "2020-01-31T23:00:00.000Z",
           "EindDatum": 1706742000000,
           "Status": "Verlopen",
           "Certificaat": { "Naam": "Uitvoeren Gewasbescherming", "__typename": "Certificaat" },
           "Passen": [
             {
-              "PasID": "110336",
-              "DatumAanvraag": 1332201600000,
-              "DatumUitgeleverd": 1332288000000,
+              "PasID": 110336,
+              "CertificeringID": 252279,
+              "DatumAanvraag": "2012-03-20T00:00:00.000Z",
+              "DatumUitgeleverd": "2012-03-21T00:00:00.000Z",
               "Aantal": 1,
               "Status": "Uitgeleverd",
               "Geadresseerde": null,
@@ -21,9 +22,10 @@
               "__typename": "Pas"
             },
             {
-              "PasID": "179494",
-              "DatumAanvraag": 1432080000000,
-              "DatumUitgeleverd": 1433289600000,
+              "PasID": 179494,
+              "CertificeringID": 252279,
+              "DatumAanvraag": "2012-03-20T00:00:00.000Z",
+              "DatumUitgeleverd": "2012-03-21T00:00:00.000Z",
               "Aantal": 1,
               "Status": "Uitgeleverd",
               "Geadresseerde": null,
@@ -34,10 +36,10 @@
           "__typename": "Certificering"
         },
         {
-          "CertificeringID": "308794",
+          "CertificeringID": 308794,
           "NummerWeergave": "31.2019.0007449",
-          "BeginDatum": 1580511600000,
-          "EindDatum": 1646697600000,
+          "BeginDatum": "2020-01-31T23:00:00.000Z",
+          "EindDatum": "2022-03-08T00:00:00.000Z",
           "Status": "Geldig",
           "Certificaat": { "Naam": "Uitvoeren gewasbesch. + KBA", "__typename": "Certificaat" },
           "Passen": [],
