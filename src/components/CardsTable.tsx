@@ -11,11 +11,12 @@ const CardsTable: React.FC<{ licenseDetails: CertificeringenFieldsFragment }> = 
   }
 
   const sortedRows =
-    (props.licenseDetails!.Passen &&
-      [...props.licenseDetails!.Passen].sort((a: PasFieldsFragment, b: PasFieldsFragment) =>
-        new Date(a.DatumAanvraag) > new Date(b.DatumAanvraag) ? -1 : 1,
+    (props.licenseDetails.Passen &&
+      ([...props.licenseDetails.Passen] as PasFieldsFragment[]).sort(
+        (a: PasFieldsFragment, b: PasFieldsFragment) =>
+          new Date(a.DatumAanvraag) > new Date(b.DatumAanvraag) ? -1 : 1,
       )) ||
-    [];
+    ([] as PasFieldsFragment[]);
 
   return (
     <>

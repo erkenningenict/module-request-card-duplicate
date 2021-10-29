@@ -32,16 +32,17 @@ export const App: React.FC<any> = () => {
   if (!data.my?.Certificeringen || !data?.tariefDuplicaat) {
     return <Alert type="danger">Kan geen gegevens ophalen</Alert>;
   }
-  const sortedLicenses = data?.my && [
-    ...data?.my.Certificeringen?.filter(
-      (license: CertificeringenFieldsFragment) => license.Status === CertificeringStatusEnum.Geldig,
-    ).sort((a: CertificeringenFieldsFragment, b: CertificeringenFieldsFragment) =>
-      new Date(a.BeginDatum) > new Date(b.BeginDatum) ? -1 : 1,
-    ),
-  ];
+  if (data.my?.Certificeringen && data.my.Certificeringen === undefined) {
+    return <Alert type="danger">Kan geen gegevens ophalen</Alert>;
+  }
+  const sortedLicenses: CertificeringenFieldsFragment[] = [
+    ...data?.my
+      .Certificeringen!.filter((license) => license!.Status === CertificeringStatusEnum.Geldig)
+      .sort((a, b) => (new Date(a!.BeginDatum) > new Date(b!.BeginDatum) ? -1 : 1)),
+  ] as CertificeringenFieldsFragment[];
   return (
     <CardsContainer
-      list={sortedLicenses}
+      list={sortedLicenses ?? []}
       priceExVat={(data?.tariefDuplicaat && data?.tariefDuplicaat.TotaalExtBtw) || 0}
     ></CardsContainer>
   );

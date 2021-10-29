@@ -17,7 +17,11 @@ const CardRow: React.FC<{
       <td>
         {props.card.PasRetouren?.map(
           (passReturn) =>
-            `Post onbestelbaar, retour ontvangen op ${toDutchDate(passReturn.DatumRetour)}`,
+            `Post onbestelbaar, retour ontvangen op ${
+              passReturn?.DatumRetour !== undefined
+                ? toDutchDate(passReturn!.DatumRetour)
+                : 'datum nog onbekend.'
+            }`,
         )}
         {props.card.PasRetouren!.length === 0 && 'Er zijn geen retouren ontvangen'}
       </td>
