@@ -23,10 +23,11 @@ const OrderDuplicate: React.FC<{
         id: cache.identify(props.license),
         fields: {
           // update the Passen field
-          Passen(existingPassenRefs = [], { readField }) {
+          Passen(existingPassenRefs = [], {}) {
             // first write the new Pas data to the cache
             const newPasRef = cache.writeFragment({
               data: {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 ...mutationResult!.requestDuplicate!.cards[0],
                 // include the fields that are not returned from the server
                 PasRetouren: [],
@@ -61,6 +62,7 @@ const OrderDuplicate: React.FC<{
             },
           },
         });
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         props.onInvoiceLink(res.data!.requestDuplicate.invoiceLink);
       }}
     >
@@ -85,7 +87,7 @@ const OrderDuplicate: React.FC<{
       </div>
       <div className="form-group ">
         <div className="col-md-offset-4 col-md-8">
-          <Button type="primary" buttonType="submit" label="Bestellen" disabled={loading} />
+          <Button buttonType="primary" type="submit" label="Bestellen" disabled={loading} />
         </div>
       </div>
       {error && (
