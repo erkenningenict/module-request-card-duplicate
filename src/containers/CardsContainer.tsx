@@ -51,8 +51,8 @@ const CardsContainer: React.FC<{
         <div dangerouslySetInnerHTML={getInvoiceJsLink(invoiceLink, 'Bekijk factuur')} />
         <p className="marginTop">
           <Button
-            buttonType="button"
-            type="link"
+            type="button"
+            buttonType="secondary"
             label="Nog een duplicaat bestellen"
             onClick={() => setInvoiceLink('')}
           ></Button>
@@ -63,16 +63,19 @@ const CardsContainer: React.FC<{
 
   const itemTemplate = (option) => {
     const o = props.list.find((l) => l.CertificeringID === option.value);
+    if (!o) {
+      return <div>Licentie type niet gevonden</div>;
+    }
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '60px' }}>
         <div>
-          <strong>{o!.Certificaat!.Naam}</strong>
+          <strong>{o.Certificaat?.Naam}</strong>
         </div>
         <div>
-          Pasnummer: <strong>{o?.NummerWeergave}</strong>
+          Pasnummer: <strong>{o.NummerWeergave}</strong>
         </div>
         <div>
-          Geldig vanaf {toDutchDate(o!.BeginDatum)}, einddatum {toDutchDate(o!.EindDatum)}
+          Geldig vanaf {toDutchDate(o.BeginDatum)}, einddatum {toDutchDate(o.EindDatum)}
         </div>
       </div>
     );
@@ -98,7 +101,7 @@ const CardsContainer: React.FC<{
               options={props.list.map((license: CertificeringenFieldsFragment) => ({
                 value: license.CertificeringID,
                 label: `${license.NummerWeergave} - ${
-                  license!.Certificaat!.Naam
+                  license.Certificaat?.Naam
                 } (geldig vanaf: ${toDutchDate(license.BeginDatum)}, einddatum: ${toDutchDate(
                   license.EindDatum,
                 )})
@@ -114,7 +117,7 @@ const CardsContainer: React.FC<{
             ></Select>
             {selectedLicense && <CardsTable licenseDetails={selectedLicense}></CardsTable>}
             {selectedLicense &&
-              (selectedLicense.Passen!.length > 0 ||
+              ((selectedLicense.Passen && selectedLicense.Passen.length > 0) ||
                 (new Date(selectedLicense.BeginDatum) <= new Date() &&
                   new Date(selectedLicense.EindDatum) >= new Date())) && (
                 <>

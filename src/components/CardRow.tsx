@@ -10,7 +10,7 @@ const CardRow: React.FC<{
     <tr key={props.card.PasID}>
       <td>{props.license.NummerWeergave}</td>
       <td>
-        {props.license.Certificaat!.Naam} (geldig vanaf: {toDutchDate(props.license.BeginDatum)})
+        {props.license.Certificaat?.Naam} (geldig vanaf: {toDutchDate(props.license.BeginDatum)})
       </td>
       <td>{toDutchDate(props.card.DatumAanvraag)}</td>
       <td>{toDutchDate(props.card.DatumUitgeleverd, { defaultValue: 'Nog niet uitgeleverd' })}</td>
@@ -19,11 +19,11 @@ const CardRow: React.FC<{
           (passReturn) =>
             `Post onbestelbaar, retour ontvangen op ${
               passReturn?.DatumRetour !== undefined
-                ? toDutchDate(passReturn!.DatumRetour)
+                ? toDutchDate(passReturn?.DatumRetour)
                 : 'datum nog onbekend.'
             }`,
         )}
-        {props.card.PasRetouren!.length === 0 && 'Er zijn geen retouren ontvangen'}
+        {props.card.PasRetouren?.length === 0 && 'Er zijn geen retouren ontvangen'}
       </td>
       <td>{props.card.Status}</td>
       <td>{props.card.Aantal}</td>

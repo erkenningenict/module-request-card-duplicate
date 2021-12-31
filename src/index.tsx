@@ -4,7 +4,7 @@ import 'core-js/es/set';
 import 'es6-shim';
 import 'react-app-polyfill/ie11';
 
-import { ERKENNINGEN_GRAPHQL_API_URL, ERKENNINGEN_SITE_TYPE } from '@erkenningen/config';
+import { ERKENNINGEN_GRAPHQL_API_URL } from '@erkenningen/config';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -36,7 +36,7 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ThemeBureauErkenningen>
-      <ThemeContext.Provider value={{ mode: ERKENNINGEN_SITE_TYPE }}>
+      <ThemeContext.Provider value={{ mode: 'admin' }}>
         <App />
       </ThemeContext.Provider>
     </ThemeBureauErkenningen>

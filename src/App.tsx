@@ -36,9 +36,11 @@ export const App: React.FC<any> = () => {
     return <Alert type="danger">Kan geen gegevens ophalen</Alert>;
   }
   const sortedLicenses: CertificeringenFieldsFragment[] = [
-    ...data?.my
-      .Certificeringen!.filter((license) => license!.Status === CertificeringStatusEnum.Geldig)
-      .sort((a, b) => (new Date(a!.BeginDatum) > new Date(b!.BeginDatum) ? -1 : 1)),
+    ...data?.my.Certificeringen?.filter(
+      (license) => license?.Status === CertificeringStatusEnum.Geldig,
+    ).sort((a, b) =>
+      new Date(a?.BeginDatum || new Date()) > new Date(b?.BeginDatum || new Date()) ? -1 : 1,
+    ),
   ] as CertificeringenFieldsFragment[];
   return (
     <CardsContainer
