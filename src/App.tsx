@@ -46,7 +46,6 @@ export const App: React.FC<any> = () => {
         license?.CertificaatID !== 26 &&
         license?.CertificaatID !== 27 &&
         license?.CertificaatID !== 28 &&
-        license?.CertificaatID !== 1 &&
         license?.CertificaatID !== 29,
     ).sort((a, b) =>
       new Date(a?.BeginDatum || new Date()) > new Date(b?.BeginDatum || new Date()) ? -1 : 1,
