@@ -87,7 +87,8 @@ const CardsContainer: React.FC<{
         {props.list.length === 0 && (
           <>
             <Alert type="info">U heeft (nog) geen geldige licentie.</Alert>
-            Als u een geldige licentie heeft kun u hier een duplicaat van uw pas bestellen.
+            Als u een geldige licentie heeft kun u hier een duplicaat van uw pas bestellen. Voor KBA
+            licenties kunt u geen duplicaat pasjes meer bestellen.
           </>
         )}
         {props.list.length > 0 && (
@@ -96,6 +97,7 @@ const CardsContainer: React.FC<{
               Kies de licentie waarvoor u een duplicaat wilt bestellen (alleen geldige passen worden
               getoond).
             </p>
+
             <Select
               className="fullWidth"
               options={props.list.map((license: CertificeringenFieldsFragment) => ({

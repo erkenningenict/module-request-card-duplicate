@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T;
+export type InputMaybe<T> = T;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -12,13 +13,9 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** Date custom scalar type */
   Date: Date;
-  /** The Email scalar type represents E-Mail addresses compliant to RFC 822. */
   Email: any;
-  /** Safe string custom scalar type that does not allow xss attacks */
   SafeString: any;
-  /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
 
@@ -34,6 +31,19 @@ export type AangemeldeCursusDeelname = {
   Prijs: Scalars['Float'];
   Status: CursusDeelnameStatusEnum;
   Titel: Scalars['String'];
+};
+
+export type AuthenticateInput = {
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type AuthenticateResult = {
+  __typename?: 'AuthenticateResult';
+  Persoon: Persoon;
+  accessToken: Scalars['String'];
+  refreshToken: Scalars['String'];
+  roles: Array<Scalars['String']>;
 };
 
 export type Beoordeling = {
@@ -53,8 +63,14 @@ export enum BeoordelingStatusEnum {
   Afgekeurd = 'Afgekeurd',
   CommentaarGevraagd = 'CommentaarGevraagd',
   Goedgekeurd = 'Goedgekeurd',
-  TerBeoordeling = 'TerBeoordeling'
+  TerBeoordeling = 'TerBeoordeling',
 }
+
+export type Bijeenkomst = {
+  __typename?: 'Bijeenkomst';
+  Cursus?: Maybe<Cursus>;
+  Vaknorm?: Maybe<Vaknorm>;
+};
 
 export type Certificaat = {
   __typename?: 'Certificaat';
@@ -109,7 +125,7 @@ export enum CertificeringStatusEnum {
   Ingenomen = 'Ingenomen',
   Ingetrokken = 'Ingetrokken',
   TerGoedkeuring = 'TerGoedkeuring',
-  Verlopen = 'Verlopen'
+  Verlopen = 'Verlopen',
 }
 
 export type Comment = {
@@ -136,6 +152,8 @@ export type Contactgegevens = {
   Adresregel2?: Maybe<Scalars['String']>;
   ContactgegevensID: Scalars['Int'];
   DisplayAddress?: Maybe<Scalars['String']>;
+  DisplayPostalCodeCity?: Maybe<Scalars['String']>;
+  DisplayStreetHouseNr?: Maybe<Scalars['String']>;
   Email?: Maybe<Scalars['String']>;
   EmailWerkgever?: Maybe<Scalars['String']>;
   Fax?: Maybe<Scalars['String']>;
@@ -153,12 +171,12 @@ export type Contactgegevens = {
 export type CreateCourseInput = {
   Begintijd: Scalars['Date'];
   Datum: Scalars['Date'];
-  Docent?: Maybe<Scalars['SafeString']>;
+  Docent?: InputMaybe<Scalars['SafeString']>;
   Eindtijd: Scalars['Date'];
   IsBesloten: Scalars['Boolean'];
   LokatieID: Scalars['Int'];
   MaximumCursisten: Scalars['Int'];
-  Opmerkingen?: Maybe<Scalars['SafeString']>;
+  Opmerkingen?: InputMaybe<Scalars['SafeString']>;
   Prijs: Scalars['Float'];
   Promotietekst: Scalars['SafeString'];
   Titel: Scalars['SafeString'];
@@ -166,7 +184,7 @@ export type CreateCourseInput = {
 };
 
 export type CreateInvoiceCollectionInput = {
-  invoiceIds?: Maybe<Array<Scalars['Int']>>;
+  invoiceIds?: InputMaybe<Array<Scalars['Int']>>;
 };
 
 export type CreateInvoiceCollectionResult = {
@@ -176,15 +194,34 @@ export type CreateInvoiceCollectionResult = {
   success: Scalars['Boolean'];
 };
 
+export type CreatePasInput = {
+  amount?: InputMaybe<Scalars['Int']>;
+  createInvoice?: InputMaybe<Scalars['Boolean']>;
+  licenseId: Scalars['Int'];
+  recipient?: InputMaybe<Scalars['SafeString']>;
+  remark?: InputMaybe<Scalars['SafeString']>;
+  requestDate: Scalars['Date'];
+};
+
+export type CreatePasResult = {
+  __typename?: 'CreatePasResult';
+  Pas?: Maybe<Pas>;
+  success: Scalars['Boolean'];
+};
+
 export enum CrediteurTypeEnum {
   Persoon = 'persoon',
-  Universiteit = 'universiteit'
+  Universiteit = 'universiteit',
 }
 
 export type Cursus = {
   __typename?: 'Cursus';
   /**  Only available when sub query is available  */
   AantalCursusDeelnames?: Maybe<Scalars['Int']>;
+  AantalDeelnamesAangemeld?: Maybe<Scalars['Int']>;
+  AantalDeelnamesVerwerkt?: Maybe<Scalars['Int']>;
+  /**  Only available when associated entity CursusDeelname is available  */
+  AantalDeelnamesVoorlopig?: Maybe<Scalars['Int']>;
   AocKenmerk?: Maybe<Scalars['String']>;
   CursusCode?: Maybe<Scalars['String']>;
   CursusDeelnames?: Maybe<Array<Maybe<CursusDeelname>>>;
@@ -229,12 +266,10 @@ export enum CursusDeelnameStatusEnum {
   Betaald = 'Betaald',
   Geregistreerd = 'Geregistreerd',
   Geslaagd = 'Geslaagd',
-  /** Gezakt theorie, geslaagd praktijk */
   GeslaagdPraktijkGezaktTheorie = 'GeslaagdPraktijk_GezaktTheorie',
-  /** Geslaagd theorie, gezakt praktijk */
   GeslaagdTheorieGezaktPraktijk = 'GeslaagdTheorie_GezaktPraktijk',
   Gezakt = 'Gezakt',
-  Voorlopig = 'Voorlopig'
+  Voorlopig = 'Voorlopig',
 }
 
 export type CursusNodes = {
@@ -272,16 +307,16 @@ export type CursusSessie = {
 
 export enum CursusStatusEnum {
   Betaald = 'Betaald',
-  ExamenAangemeld = 'ExamenAangemeld',
+  DeelnemersAangemeld = 'DeelnemersAangemeld',
   Goedgekeurd = 'Goedgekeurd',
-  Voorlopig = 'Voorlopig'
+  Voorlopig = 'Voorlopig',
 }
 
 export enum DebiteurTypeEnum {
   Exameninstelling = 'exameninstelling',
   Persoon = 'persoon',
   Universiteit = 'universiteit',
-  Vakgroep = 'vakgroep'
+  Vakgroep = 'vakgroep',
 }
 
 export type DeclarationInvoiceCreatedResult = {
@@ -290,8 +325,30 @@ export type DeclarationInvoiceCreatedResult = {
   InvoiceLink: Scalars['String'];
 };
 
+export type DeleteBijeenkomstInput = {
+  CursusID?: InputMaybe<Scalars['Int']>;
+};
+
+export type DeleteBijeenkomstResult = {
+  __typename?: 'DeleteBijeenkomstResult';
+  success: Scalars['Boolean'];
+};
+
 export type DeleteExamInput = {
-  CursusID?: Maybe<Scalars['Int']>;
+  CursusID?: InputMaybe<Scalars['Int']>;
+};
+
+export type DeleteExamResult = {
+  __typename?: 'DeleteExamResult';
+  success: Scalars['Boolean'];
+};
+
+export type DeletePersoonHandelshuisvestigingForPersoonIdInput = {
+  PersoonHandelshuisVestigingID: Scalars['Int'];
+};
+
+export type DeletePersoonVakgroepForPersoonIdInput = {
+  PersoonVakgroepID: Scalars['Int'];
 };
 
 export type DigitaalExamen = {
@@ -357,16 +414,13 @@ export enum FactuurHistorieStatusEnum {
   Creditfactuur = 'Creditfactuur',
   DoorBeAfgehandeld = 'Door_BE_Afgehandeld',
   Oninbaar = 'Oninbaar',
-  OnjuistAangemaakt = 'OnjuistAangemaakt'
+  OnjuistAangemaakt = 'OnjuistAangemaakt',
 }
 
 export type FactuurNodes = {
   __typename?: 'FactuurNodes';
-  /** The email objects */
   nodes?: Maybe<Array<Maybe<Invoice>>>;
-  /** Page info */
   pageInfo?: Maybe<PageInfo>;
-  /** Total nr of emails */
   totalCount: Scalars['Int'];
 };
 
@@ -379,22 +433,21 @@ export type File = {
   path: Scalars['String'];
 };
 
-/** , orderBy: OrderByArgs */
 export type FilterInvoicesInput = {
-  CrediteurID?: Maybe<Scalars['Int']>;
-  CrediteurType?: Maybe<Scalars['SafeString']>;
-  CursusCode?: Maybe<Scalars['SafeString']>;
-  DebiteurID?: Maybe<Scalars['Int']>;
-  DebiteurType?: Maybe<DebiteurTypeEnum>;
-  ExamenInstellingID?: Maybe<Scalars['Int']>;
-  FactuurNummer?: Maybe<Scalars['SafeString']>;
-  ForReviewersOnly?: Maybe<Scalars['Boolean']>;
-  FromDate?: Maybe<Scalars['Date']>;
-  InvoiceCollectionFilter?: Maybe<InvoiceCollectionsFilterEnum>;
-  InvoiceStatusFilterList?: Maybe<Array<Maybe<Scalars['SafeString']>>>;
-  PaymentStatus?: Maybe<PaymentStatusEnum>;
-  ToDate?: Maybe<Scalars['Date']>;
-  VakgroepID?: Maybe<Scalars['Int']>;
+  CrediteurID?: InputMaybe<Scalars['Int']>;
+  CrediteurType?: InputMaybe<Scalars['SafeString']>;
+  CursusCode?: InputMaybe<Scalars['SafeString']>;
+  DebiteurID?: InputMaybe<Scalars['Int']>;
+  DebiteurType?: InputMaybe<DebiteurTypeEnum>;
+  ExamenInstellingID?: InputMaybe<Scalars['Int']>;
+  FactuurNummer?: InputMaybe<Scalars['SafeString']>;
+  ForReviewersOnly?: InputMaybe<Scalars['Boolean']>;
+  FromDate?: InputMaybe<Scalars['Date']>;
+  InvoiceCollectionFilter?: InputMaybe<InvoiceCollectionsFilterEnum>;
+  InvoiceStatusFilterList?: InputMaybe<Array<InputMaybe<Scalars['SafeString']>>>;
+  PaymentStatus?: InputMaybe<PaymentStatusEnum>;
+  ToDate?: InputMaybe<Scalars['Date']>;
+  VakgroepID?: InputMaybe<Scalars['Int']>;
 };
 
 export type GetInspectionPlanningInput = {
@@ -420,10 +473,56 @@ export type GetInspectionReportsInput = {
   volgensIntentieAanbod: Scalars['Int'];
 };
 
+export type Handelshuis = {
+  __typename?: 'Handelshuis';
+  ApiKey?: Maybe<Scalars['String']>;
+  CDGdeelnemer?: Maybe<Scalars['Boolean']>;
+  CdgBedrijfId?: Maybe<Scalars['Int']>;
+  Code: Scalars['String'];
+  Contactgegevens: Contactgegevens;
+  ContactgegevensID: Scalars['Int'];
+  EindDatumCertificaat?: Maybe<Scalars['Date']>;
+  GegevensVerzamelen: Scalars['Boolean'];
+  HandelshuisID: Scalars['Int'];
+  IsActief: Scalars['Boolean'];
+  IsBtwPlichtig: Scalars['Boolean'];
+  Naam: Scalars['String'];
+  UniversiteitID: Scalars['Int'];
+  VKLHandel?: Maybe<Scalars['Boolean']>;
+  WebserviceEnabled: Scalars['Boolean'];
+};
+
+export type HandelshuisVestiging = {
+  __typename?: 'HandelshuisVestiging';
+  CDGdeelnemer?: Maybe<Scalars['Boolean']>;
+  CdgBedrijfId?: Maybe<Scalars['Int']>;
+  CdgNevenvestigingId?: Maybe<Scalars['Int']>;
+  Code: Scalars['String'];
+  Contactgegevens: Contactgegevens;
+  ContactgegevensID: Scalars['Int'];
+  HandelshuisID: Scalars['Int'];
+  HandelshuisVestigingID: Scalars['Int'];
+  IsActief: Scalars['Boolean'];
+  IsBtwPlichtig: Scalars['Boolean'];
+  IsHoofdVestiging: Scalars['Boolean'];
+  Naam: Scalars['String'];
+  VKLHandel?: Maybe<Scalars['Boolean']>;
+};
+
 export enum InkoopVerkoopEnum {
   Inkoop = 'INKOOP',
-  Verkoop = 'VERKOOP'
+  Verkoop = 'VERKOOP',
 }
+
+export type InsertPersoonHandelshuisvestigingForPersoonIdInput = {
+  DebiteurNr?: InputMaybe<Scalars['SafeString']>;
+  HandelshuisVestigingID: Scalars['Int'];
+};
+
+export type InsertPersoonVakgroepForPersoonIdInput = {
+  DebiteurNr?: InputMaybe<Scalars['SafeString']>;
+  VakgroepID: Scalars['Int'];
+};
 
 export type InspectionPlanningData = {
   __typename?: 'InspectionPlanningData';
@@ -453,7 +552,7 @@ export type Invoice = {
   BedragIncBtw: Scalars['Float'];
   BtwBedrag: Scalars['Float'];
   CreditFactuurID?: Maybe<Scalars['Int']>;
-  CreditFactuurNummer?: Maybe<Scalars['Int']>;
+  CreditFactuurNummer?: Maybe<Scalars['String']>;
   CreditInvoiceLink?: Maybe<Scalars['String']>;
   CrediteurID: Scalars['Int'];
   CrediteurType: Scalars['String'];
@@ -464,7 +563,6 @@ export type Invoice = {
   FactuurDatum: Scalars['Date'];
   FactuurID: Scalars['Int'];
   FactuurJaar: Scalars['Int'];
-  FactuurNr: Scalars['String'];
   FactuurNummer: Scalars['String'];
   FactuurStatus: Scalars['String'];
   InVerzamelfactuur: Scalars['Int'];
@@ -474,7 +572,7 @@ export type Invoice = {
   Kenmerk?: Maybe<Scalars['String']>;
   KenmerkJaarFactuurNummer: Scalars['String'];
   OrigineleFactuurID?: Maybe<Scalars['Int']>;
-  OrigineleFactuurNummer?: Maybe<Scalars['Int']>;
+  OrigineleFactuurNummer?: Maybe<Scalars['String']>;
   OrigineleInvoiceLink?: Maybe<Scalars['String']>;
   ProductCode: Scalars['String'];
   ProductNaam: Scalars['String'];
@@ -491,7 +589,7 @@ export type Invoice = {
 export enum InvoiceCollectionsFilterEnum {
   Both = 'BOTH',
   InvoiceCollections = 'INVOICE_COLLECTIONS',
-  NormalInvoices = 'NORMAL_INVOICES'
+  NormalInvoices = 'NORMAL_INVOICES',
 }
 
 export type Kennisgebied = {
@@ -539,6 +637,18 @@ export type Lokatie = {
   VakgroepID?: Maybe<Scalars['Int']>;
 };
 
+export type Monitor = {
+  __typename?: 'Monitor';
+  Achternaam: Scalars['SafeString'];
+  Email: Scalars['Email'];
+  ExamenInstellingID: Scalars['Int'];
+  Geslacht: Scalars['SafeString'];
+  MonitorID: Scalars['Int'];
+  SortableFullName?: Maybe<Scalars['SafeString']>;
+  Tussenvoegsel?: Maybe<Scalars['SafeString']>;
+  Voornaam: Scalars['SafeString'];
+};
+
 export type MultiUploadResult = {
   __typename?: 'MultiUploadResult';
   result: Scalars['String'];
@@ -546,7 +656,15 @@ export type MultiUploadResult = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  DeletePersoonHandelshuisvestigingForPersoonId: Scalars['Boolean'];
+  DeletePersoonVakgroepForPersoonId: Scalars['Boolean'];
+  InsertPersoonHandelshuisvestigingForPersoonId: PersoonHandelshuisVestiging;
+  InsertPersoonVakgroepForPersoonId: PersoonVakgroep;
+  UpdatePersoonHandelshuisvestigingForPersoonId: PersoonHandelshuisVestiging;
+  UpdatePersoonVakgroepForPersoonId: PersoonVakgroep;
   addVisitationComment?: Maybe<DiscussieVisitatie>;
+  assignMonitor?: Maybe<Scalars['Boolean']>;
+  authenticate?: Maybe<AuthenticateResult>;
   /**
    * Checks if person exists in the database by bsn and birth date and if not,
    * checks the person in the GBA
@@ -560,46 +678,90 @@ export type Mutation = {
   createInvoiceCollection: CreateInvoiceCollectionResult;
   /** The createLicense mutation is used to create a new license and a card for a person */
   createLicense: Certificering;
+  createPas?: Maybe<CreatePasResult>;
   /** The `decoupleLicense` can be used to decouple an XX + KBA license */
   decoupleLicense: DecoupleLicenseResult;
-  deleteExam?: Maybe<Scalars['Boolean']>;
+  deleteBijeenkomst?: Maybe<DeleteBijeenkomstResult>;
+  deleteExam?: Maybe<DeleteExamResult>;
+  logout: Scalars['Boolean'];
+  /** Manually start processing of graduates */
+  manuallyProcessGraduates: ManuallyProcessGraduatesResult;
   multiUpload: MultiUploadResult;
   multipleUpload: Array<File>;
+  regenerateAccessToken?: Maybe<RegenerateAccessTokenResult>;
   registerCardReturn: Scalars['Boolean'];
   /** Register for course */
   registerForCourse: RegisterResult;
-  /**
-   * The `requestAdviseCertificate` endpoint can only be used for
-   * already registered users. Users that have `IsGbaGeregistreerd` set to true
-   * are not required to have the personInput entered.
-   */
-  requestAdviseCertificate?: Maybe<ExemptionRequestResult>;
+  registerForCourseByHoogleraar: RegisterResult;
+  removeBijeenkomstParticipant?: Maybe<RemoveBijeenkomstParticipantResult>;
+  removeParticipant?: Maybe<RemoveParticipantResult>;
   /** The `requestDuplicate` can be used to request a license card duplicate */
   requestDuplicate: RequestDuplicateResult;
   /** The `requestLicense` can be used to request a certificate */
   requestLicense: RequestLicenseResult;
-  saveExam?: Maybe<Cursus>;
+  saveBijeenkomst?: Maybe<SaveBijeenkomstResult>;
+  saveExam?: Maybe<SaveExamResult>;
   /** Create or update a location */
   saveLocation: Lokatie;
+  /** Create or update a monitor */
+  saveMonitor: Monitor;
   singleUpload: File;
+  submitBijeenkomstParticipants?: Maybe<SubmitBijeenkomstParticipantsResult>;
+  submitParticipants?: Maybe<SubmitParticipantsResult>;
+  submitToRemindo?: Maybe<SubmitToRemindoResult>;
   /** Un-register for course. Input is CursusDeelnameID */
   unRegisterForCourse: UnRegisterResult;
+  unRegisterForCourseByCourseId: UnRegisterResult;
+  unassignMonitor?: Maybe<Scalars['Boolean']>;
+  unregisterForCourseByHoogleraar: UnRegisterResult;
+  updateContactgegevens?: Maybe<Contactgegevens>;
   updateInvoiceStatus: UpdateInvoiceStatusResult;
   updatePlanning: UpdatePlanningResult;
   updateVisitationReport: Visitatie;
+  uploadBijeenkomstParticipantsExcel?: Maybe<UploadBijeenkomstParticipantsExcelResult>;
+  uploadParticipantsExcel?: Maybe<UploadParticipantsExcelResult>;
 };
 
+export type MutationDeletePersoonHandelshuisvestigingForPersoonIdArgs = {
+  input: DeletePersoonHandelshuisvestigingForPersoonIdInput;
+};
+
+export type MutationDeletePersoonVakgroepForPersoonIdArgs = {
+  input: DeletePersoonVakgroepForPersoonIdInput;
+};
+
+export type MutationInsertPersoonHandelshuisvestigingForPersoonIdArgs = {
+  input: InsertPersoonHandelshuisvestigingForPersoonIdInput;
+};
+
+export type MutationInsertPersoonVakgroepForPersoonIdArgs = {
+  input: InsertPersoonVakgroepForPersoonIdInput;
+};
+
+export type MutationUpdatePersoonHandelshuisvestigingForPersoonIdArgs = {
+  input: UpdatePersoonHandelshuisvestigingForPersoonIdInput;
+};
+
+export type MutationUpdatePersoonVakgroepForPersoonIdArgs = {
+  input: UpdatePersoonVakgroepForPersoonIdInput;
+};
 
 export type MutationAddVisitationCommentArgs = {
   input: AddVisitationCommentInput;
 };
 
+export type MutationAssignMonitorArgs = {
+  input: AssignMonitorInput;
+};
+
+export type MutationAuthenticateArgs = {
+  input: AuthenticateInput;
+};
 
 export type MutationCheckForExistingPersonByBsnArgs = {
   birthDate: Scalars['Date'];
   bsn: Scalars['Int'];
 };
-
 
 export type MutationCheckForExistingPersonByPersonDataArgs = {
   birthDate: Scalars['Date'];
@@ -607,106 +769,141 @@ export type MutationCheckForExistingPersonByPersonDataArgs = {
   lastName: Scalars['String'];
 };
 
-
 export type MutationCreateCourseArgs = {
   input: CreateCourseInput;
 };
-
 
 export type MutationCreateDeclarationInvoiceArgs = {
   input: CreateDeclarationInvoiceInput;
 };
 
-
 export type MutationCreateDuplicateCardWithoutInvoiceArgs = {
   pasId: Scalars['Int'];
 };
-
 
 export type MutationCreateInvoiceCollectionArgs = {
   input: CreateInvoiceCollectionInput;
 };
 
-
 export type MutationCreateLicenseArgs = {
   input: CreateLicenseInput;
 };
 
+export type MutationCreatePasArgs = {
+  input: CreatePasInput;
+};
 
 export type MutationDecoupleLicenseArgs = {
   input: DecoupleLicenseInput;
 };
 
+export type MutationDeleteBijeenkomstArgs = {
+  input: DeleteBijeenkomstInput;
+};
 
 export type MutationDeleteExamArgs = {
   input: DeleteExamInput;
 };
-
 
 export type MutationMultiUploadArgs = {
   file1: Scalars['Upload'];
   file2: Scalars['Upload'];
 };
 
-
 export type MutationMultipleUploadArgs = {
   files: Array<Scalars['Upload']>;
 };
 
+export type MutationRegenerateAccessTokenArgs = {
+  refreshToken: Scalars['String'];
+};
 
 export type MutationRegisterCardReturnArgs = {
   input: RegisterCardReturnInput;
 };
 
-
 export type MutationRegisterForCourseArgs = {
   input: RegisterForCourseInput;
 };
 
-
-export type MutationRequestAdviseCertificateArgs = {
-  input: RequestAdviseCertificateInput;
-  personDataInput?: Maybe<RequestAdviseCertificatePersonDataInput>;
+export type MutationRegisterForCourseByHoogleraarArgs = {
+  input: RegisterForCourseByHoogleraarInput;
 };
 
+export type MutationRemoveBijeenkomstParticipantArgs = {
+  input: RemoveBijeenkomstParticipantInput;
+};
+
+export type MutationRemoveParticipantArgs = {
+  input: RemoveParticipantInput;
+};
 
 export type MutationRequestDuplicateArgs = {
   input: RequestDuplicateInput;
 };
 
-
 export type MutationRequestLicenseArgs = {
-  createPersonByBsnInput?: Maybe<CreatePersonByBsn>;
-  createPersonByPersonDataInput?: Maybe<CreatePersonByPersonData>;
+  createPersonByBsnInput?: InputMaybe<CreatePersonByBsn>;
+  createPersonByPersonDataInput?: InputMaybe<CreatePersonByPersonData>;
   input: RequestLicenseInput;
-  personDataInput?: Maybe<BasicPersonData>;
+  personDataInput?: InputMaybe<BasicPersonData>;
 };
 
+export type MutationSaveBijeenkomstArgs = {
+  input: SaveBijeenkomstInput;
+};
 
 export type MutationSaveExamArgs = {
   input: SaveExamInput;
 };
 
-
 export type MutationSaveLocationArgs = {
   input: SaveLocationInput;
 };
 
+export type MutationSaveMonitorArgs = {
+  input: SaveMonitorInput;
+};
 
 export type MutationSingleUploadArgs = {
   file: Scalars['Upload'];
 };
 
+export type MutationSubmitBijeenkomstParticipantsArgs = {
+  input: SubmitBijeenkomstParticipantsInput;
+};
+
+export type MutationSubmitParticipantsArgs = {
+  input: SubmitParticipantsInput;
+};
+
+export type MutationSubmitToRemindoArgs = {
+  input: SubmitToRemindoInput;
+};
 
 export type MutationUnRegisterForCourseArgs = {
   CursusDeelnameID: Scalars['Int'];
 };
 
+export type MutationUnRegisterForCourseByCourseIdArgs = {
+  input: UnRegisterForCourseByCourseIdInput;
+};
+
+export type MutationUnassignMonitorArgs = {
+  input: UnassignMonitorInput;
+};
+
+export type MutationUnregisterForCourseByHoogleraarArgs = {
+  input: UnregisterForCourseByHoogleraarInput;
+};
+
+export type MutationUpdateContactgegevensArgs = {
+  input: UpdateContactgegevensInput;
+};
 
 export type MutationUpdateInvoiceStatusArgs = {
   input: UpdateInvoiceStatusInput;
 };
-
 
 export type MutationUpdatePlanningArgs = {
   inspectorId: Scalars['Int'];
@@ -714,14 +911,22 @@ export type MutationUpdatePlanningArgs = {
   visitDate: Scalars['Date'];
 };
 
-
 export type MutationUpdateVisitationReportArgs = {
   input: UpdateVisitationReportInput;
+};
+
+export type MutationUploadBijeenkomstParticipantsExcelArgs = {
+  input: UploadBijeenkomstParticipantsExcelInput;
+};
+
+export type MutationUploadParticipantsExcelArgs = {
+  input: UploadParticipantsExcelInput;
 };
 
 export type My = {
   __typename?: 'My';
   AangemeldeCursusDeelnames?: Maybe<Array<Maybe<AangemeldeCursusDeelname>>>;
+  AangemeldeCursusDeelnamesPerCertificeringId?: Maybe<Array<Maybe<CursusDeelname>>>;
   /**
    * Fetches only current licenses when 'alleenGeldig' is true.
    * When false (default), fetches all licenses.
@@ -734,36 +939,42 @@ export type My = {
   Persoon: Persoon;
   Roles?: Maybe<Array<Maybe<Scalars['String']>>>;
   Studieresultaten?: Maybe<Array<Maybe<Studieresultaat>>>;
+  StudyProgress: Array<StudyProgress>;
   /** Link to vakgroep(en), via Hoogleraar table */
   VakgroepLinks?: Maybe<Array<Maybe<VakgroepLink>>>;
+  personId: Scalars['Int'];
 };
 
+export type MyAangemeldeCursusDeelnamesPerCertificeringIdArgs = {
+  certificeringId: Scalars['Int'];
+};
 
 export type MyCertificeringenArgs = {
-  alleenGeldig?: Maybe<Scalars['Boolean']>;
-  inclusiefPassen?: Maybe<Scalars['Boolean']>;
-  perDatum?: Maybe<Scalars['Date']>;
+  alleenGeldig?: InputMaybe<Scalars['Boolean']>;
+  inclusiefPassen?: InputMaybe<Scalars['Boolean']>;
+  perDatum?: InputMaybe<Scalars['Date']>;
 };
-
 
 export type MyCursusDeelnamesArgs = {
-  certificeringId?: Maybe<Scalars['Int']>;
+  certificeringId?: InputMaybe<Scalars['Int']>;
 };
-
 
 export type MyExamenInstellingLinksArgs = {
-  activeOnly?: Maybe<Scalars['Boolean']>;
+  activeOnly?: InputMaybe<Scalars['Boolean']>;
 };
-
 
 export type MyStudieresultatenArgs = {
-  certificeringId?: Maybe<Scalars['Int']>;
-  isExamen?: Maybe<Scalars['Boolean']>;
+  certificeringId?: InputMaybe<Scalars['Int']>;
+  fullDetails?: InputMaybe<Scalars['Boolean']>;
+  isExamen?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type MyStudyProgressArgs = {
+  skipParticipationDetails?: InputMaybe<Scalars['Boolean']>;
+};
 
 export type MyVakgroepLinksArgs = {
-  activeOnly?: Maybe<Scalars['Boolean']>;
+  activeOnly?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type Nationaliteiten = {
@@ -784,9 +995,7 @@ export type NormVersie = {
 };
 
 export type OrderByArgs = {
-  /** The field to order by */
   field: Scalars['String'];
-  /** The sort direction */
   sortDirection: SortDirectionEnum;
 };
 
@@ -794,6 +1003,15 @@ export type PageInfo = {
   __typename?: 'PageInfo';
   hasNextPage?: Maybe<Scalars['Boolean']>;
   hasPreviousPage?: Maybe<Scalars['Boolean']>;
+};
+
+export type ParticipationPoint = {
+  __typename?: 'ParticipationPoint';
+  CountedPoints: Scalars['Int'];
+  DonePoints: Scalars['Int'];
+  RequiredPoints: Scalars['Int'];
+  ThemaId: Scalars['Int'];
+  ThemaNaam: Scalars['String'];
 };
 
 export type Pas = {
@@ -825,13 +1043,14 @@ export enum PasStatusEnum {
   Aangevraagd = 'Aangevraagd',
   Betaald = 'Betaald',
   Error = 'Error',
-  Uitgeleverd = 'Uitgeleverd'
+  OnHold = 'OnHold',
+  Uitgeleverd = 'Uitgeleverd',
 }
 
 export enum PaymentStatusEnum {
   All = 'ALL',
   NotPaid = 'NOT_PAID',
-  Paid = 'PAID'
+  Paid = 'PAID',
 }
 
 export type Persoon = {
@@ -843,6 +1062,7 @@ export type Persoon = {
   Certificeringen?: Maybe<Array<Maybe<Certificering>>>;
   /** Gets the contact data */
   Contactgegevens: Contactgegevens;
+  CursusDeelname?: Maybe<Array<Maybe<CursusDeelname>>>;
   /** Name in format 'Voorletters [tussenvoegsel] Achternaam */
   FullName?: Maybe<Scalars['String']>;
   GbaNummer: Scalars['String'];
@@ -859,10 +1079,29 @@ export type Persoon = {
   Voorletters: Scalars['String'];
 };
 
-
 export type PersoonCertificeringenArgs = {
-  alleenGeldig?: Maybe<Scalars['Boolean']>;
-  perDatum?: Maybe<Scalars['Date']>;
+  alleenGeldig?: InputMaybe<Scalars['Boolean']>;
+  perDatum?: InputMaybe<Scalars['Date']>;
+};
+
+export type PersoonHandelshuisVestiging = {
+  __typename?: 'PersoonHandelshuisVestiging';
+  DebiteurNr?: Maybe<Scalars['String']>;
+  HandelshuisVestiging: HandelshuisVestiging;
+  HandelshuisVestigingID: Scalars['Int'];
+  Persoon: Persoon;
+  PersoonHandelshuisVestigingID: Scalars['Int'];
+  PersoonID: Scalars['Int'];
+};
+
+export type PersoonVakgroep = {
+  __typename?: 'PersoonVakgroep';
+  DebiteurNr?: Maybe<Scalars['String']>;
+  Persoon: Persoon;
+  PersoonID: Scalars['Int'];
+  PersoonVakgroepID: Scalars['Int'];
+  Vakgroep: Vakgroep;
+  VakgroepID: Scalars['Int'];
 };
 
 export type PlanningData = {
@@ -895,8 +1134,8 @@ export type PlanningData = {
 };
 
 export enum ProductConfiguratieCodeEnum {
-  /** Aanvraag duplicaat */
   Ad = 'AD',
+  Aeikg = 'AEIKG',
   Aekg = 'AEKG',
   Aekt = 'AEKT',
   Beec = 'BEEC',
@@ -912,30 +1151,22 @@ export enum ProductConfiguratieCodeEnum {
   Mgek = 'MGEK',
   Mgeki = 'MGEKI',
   Mgem = 'MGEM',
-  Mgemi = 'MGEMI'
+  Mgemi = 'MGEMI',
 }
 
 export enum ProductEnum {
-  Ad = 'AD',
-  Agn = 'AGN',
-  Ak = 'AK',
-  Be = 'BE',
-  Bk = 'BK',
-  Bv = 'BV',
   D1 = 'D1',
   D2 = 'D2',
   D3 = 'D3',
   D4 = 'D4',
-  Dk = 'DK',
-  Ec = 'EC',
-  Ek = 'EK',
-  Et = 'ET',
-  Tb = 'TB'
 }
 
 export type Query = {
   __typename?: 'Query';
+  BijeenkomstDetails?: Maybe<Bijeenkomst>;
+  BijeenkomstenList?: Maybe<CursusNodes>;
   Certificaten?: Maybe<Array<Maybe<Certificaat>>>;
+  Certificering?: Maybe<Certificering>;
   Certificeringen?: Maybe<Array<Maybe<Certificering>>>;
   Competenties: Array<Maybe<Competentie>>;
   Contactgegevens?: Maybe<Contactgegevens>;
@@ -946,12 +1177,22 @@ export type Query = {
   ExamSpecialties?: Maybe<Array<Maybe<Vak>>>;
   ExamenInstellingen: Array<Maybe<ExamenInstelling>>;
   Exams?: Maybe<CursusNodes>;
+  GetCursusDeelnemer?: Maybe<Persoon>;
+  GetCursusDeelnemers?: Maybe<Array<Maybe<CursusDeelname>>>;
+  GetCursusInfoForHoogleraar?: Maybe<Cursus>;
+  GetCursusSessiesForHoogleraar?: Maybe<Array<Maybe<Sessie>>>;
+  GetHandelshuisVestigingen: Array<Maybe<HandelshuisVestiging>>;
+  GetHandelshuizen: Array<Maybe<Handelshuis>>;
+  GetPersoonHandelshuisvestigingenForPersoonId: Array<Maybe<PersoonHandelshuisVestiging>>;
+  GetPersoonVakgroepenForPersoonId: Array<Maybe<PersoonVakgroep>>;
   Kennisgebieden: Array<Maybe<Kennisgebied>>;
   Landen: Array<Maybe<Landen>>;
   Nationaliteiten: Array<Maybe<Nationaliteiten>>;
   Persoon?: Maybe<Persoon>;
+  SearchCursusDeelnemers?: Maybe<Array<Maybe<Persoon>>>;
   SearchExamOrganizers?: Maybe<Array<Maybe<SearchExamOrganizerResult>>>;
   SearchLocations?: Maybe<Array<Maybe<Lokatie>>>;
+  SearchMonitors?: Maybe<Array<Maybe<Monitor>>>;
   SearchOrganizers?: Maybe<Array<Maybe<SearchOrganizerResult>>>;
   SearchSpecialties?: Maybe<Array<Maybe<SearchSpecialtyResult>>>;
   Sessie?: Maybe<Sessie>;
@@ -972,11 +1213,10 @@ export type Query = {
   getInspectionPlanning?: Maybe<InspectionResult>;
   getInspectionReports?: Maybe<Array<Maybe<Visitatie>>>;
   getInspectors?: Maybe<Array<Maybe<Inspector>>>;
+  getStudyProgressByLicenseId: StudyProgress;
+  getStudyProgressByLicenseNumber: StudyProgress;
+  getStudyProgressByPersonId: Array<StudyProgress>;
   hasDuplicatePending: Scalars['Boolean'];
-  /**
-   * Get unpaid invoices.
-   * Optionally filter by status. And apply pagination with pageSize, pageNumber and orderBy (default: createdOn, DESC)
-   */
   invoices: FactuurNodes;
   /** In the input, either specialtyId or courseId must be supplied */
   isLicenseValidForSpecialty: IsLicenseValidForSpecialtyResult;
@@ -990,156 +1230,197 @@ export type Query = {
   uploads?: Maybe<Array<Maybe<File>>>;
 };
 
-
-export type QueryCertificatenArgs = {
-  idList?: Maybe<Array<Scalars['Int']>>;
+export type QueryBijeenkomstDetailsArgs = {
+  input: SearchBijeenkomstInput;
 };
 
+export type QueryBijeenkomstenListArgs = {
+  input: BijeenkomstenListInput;
+};
+
+export type QueryCertificatenArgs = {
+  idList?: InputMaybe<Array<Scalars['Int']>>;
+};
+
+export type QueryCertificeringArgs = {
+  certificeringId: Scalars['Int'];
+};
 
 export type QueryCertificeringenArgs = {
   personId: Scalars['Int'];
 };
 
-
 export type QueryContactgegevensArgs = {
   ContactgegevensID: Scalars['Int'];
 };
-
 
 export type QueryCursusDeelnameDetailsArgs = {
   cursusDeelnameId: Scalars['Int'];
 };
 
-
 export type QueryCursusDeelnamesArgs = {
-  certificeringId?: Maybe<Scalars['Int']>;
+  certificeringId?: InputMaybe<Scalars['Int']>;
 };
-
 
 export type QueryCursusSessiesArgs = {
   input: SearchCourseSessionsInput;
 };
 
-
 export type QueryExamDetailsArgs = {
   input: SearchExamInput;
 };
-
 
 export type QueryExamSpecialtiesArgs = {
   input: ExamSpecialtiesInput;
 };
 
-
 export type QueryExamenInstellingenArgs = {
-  findById?: Maybe<Scalars['Int']>;
-  isActive?: Maybe<Scalars['Boolean']>;
+  findById?: InputMaybe<Scalars['Int']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
 };
-
 
 export type QueryExamsArgs = {
   input: ExamsInput;
 };
 
+export type QueryGetCursusDeelnemerArgs = {
+  input?: InputMaybe<GetCursusDeelnemerInput>;
+};
+
+export type QueryGetCursusDeelnemersArgs = {
+  input?: InputMaybe<GetCursusDeelnemersInput>;
+};
+
+export type QueryGetCursusInfoForHoogleraarArgs = {
+  input?: InputMaybe<GetCursusInfoForHoogleraarInput>;
+};
+
+export type QueryGetCursusSessiesForHoogleraarArgs = {
+  input?: InputMaybe<CursusSessiesForHoogleraarInput>;
+};
+
+export type QueryGetHandelshuisVestigingenArgs = {
+  findById?: InputMaybe<Scalars['Int']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type QueryGetHandelshuizenArgs = {
+  findById?: InputMaybe<Scalars['Int']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+};
 
 export type QueryPersoonArgs = {
   PersoonID: Scalars['Int'];
 };
 
+export type QuerySearchCursusDeelnemersArgs = {
+  input?: InputMaybe<SearchCursusDeelnemersInput>;
+};
 
 export type QuerySearchLocationsArgs = {
   input: SearchLocationsInput;
 };
 
+export type QuerySearchMonitorsArgs = {
+  input: SearchMonitorsInput;
+};
 
 export type QuerySearchSpecialtiesArgs = {
   input: SearchSpecialtyInput;
 };
 
-
 export type QuerySessieArgs = {
   sessieId: Scalars['Int'];
 };
-
 
 export type QuerySpecialtiesArgs = {
   input: SpecialtiesInput;
 };
 
-
 export type QuerySpecialtyArgs = {
-  fullDetails?: Maybe<Scalars['Boolean']>;
+  fullDetails?: InputMaybe<Scalars['Boolean']>;
   vakId: Scalars['Int'];
 };
 
-
 export type QueryVakgroepenArgs = {
-  findById?: Maybe<Scalars['Int']>;
-  isActive?: Maybe<Scalars['Boolean']>;
+  findById?: InputMaybe<Scalars['Int']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
 };
-
 
 export type QueryVisitationArgs = {
   input: VisitationInput;
 };
 
-
 export type QueryVisitationDeclarationArgs = {
   input: VisitationInput;
 };
-
 
 export type QueryVisitationsArgs = {
   input: VisitationsInput;
 };
 
-
 export type QueryVooropleidingenArgs = {
-  codes?: Maybe<Array<Maybe<Scalars['String']>>>;
+  codes?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
-
 
 export type QueryCertificatesByPreEducationArgs = {
   code: Scalars['String'];
 };
 
-
 export type QueryGetInspectionPlanningArgs = {
   input: GetInspectionPlanningInput;
 };
-
 
 export type QueryGetInspectionReportsArgs = {
   input: GetInspectionReportsInput;
 };
 
+export type QueryGetStudyProgressByLicenseIdArgs = {
+  certificeringId: Scalars['Int'];
+  skipParticipationDetails?: InputMaybe<Scalars['Boolean']>;
+  studyResultsMustBePaid?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type QueryGetStudyProgressByLicenseNumberArgs = {
+  nummerweergave: Scalars['SafeString'];
+  skipParticipationDetails?: InputMaybe<Scalars['Boolean']>;
+  studyResultsMustBePaid?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type QueryGetStudyProgressByPersonIdArgs = {
+  personId: Scalars['Int'];
+  skipParticipationDetails?: InputMaybe<Scalars['Boolean']>;
+  studyResultsMustBePaid?: InputMaybe<Scalars['Boolean']>;
+};
 
 export type QueryHasDuplicatePendingArgs = {
   licenseId: Scalars['Int'];
 };
 
-
 export type QueryInvoicesArgs = {
-  filterInvoices?: Maybe<FilterInvoicesInput>;
-  orderBy?: Maybe<OrderByArgs>;
+  filterInvoices?: InputMaybe<FilterInvoicesInput>;
+  orderBy?: InputMaybe<OrderByArgs>;
   pageNumber: Scalars['Int'];
   pageSize: Scalars['Int'];
 };
-
 
 export type QueryIsLicenseValidForSpecialtyArgs = {
   input: IsLicenseValidForSpecialtyInput;
 };
 
-
 export type QuerySearchCardArgs = {
   licenseNumber: Scalars['SafeString'];
 };
 
-
 export type QueryTariefByCertificaatCodeArgs = {
   certificaatCode: Scalars['String'];
-  individueleAanvraag?: Maybe<Scalars['Boolean']>;
+  individueleAanvraag?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type RegenerateAccessTokenResult = {
+  __typename?: 'RegenerateAccessTokenResult';
+  accessToken: Scalars['String'];
+  refreshToken: Scalars['String'];
 };
 
 export type RegisterCardReturnInput = {
@@ -1153,21 +1434,80 @@ export type RegisterResult = {
   success: Scalars['Boolean'];
 };
 
-export type SaveExamInput = {
-  Begintijd: Scalars['Date'];
-  CursusID?: Maybe<Scalars['Int']>;
-  Datum: Scalars['Date'];
-  Docent?: Maybe<Scalars['SafeString']>;
-  Eindtijd: Scalars['Date'];
-  IsBesloten?: Maybe<Scalars['Boolean']>;
-  LokatieID: Scalars['Int'];
+export type RemoveBijeenkomstParticipantInput = {
+  CursusDeelnameID?: InputMaybe<Scalars['Int']>;
+  CursusID?: InputMaybe<Scalars['Int']>;
+};
+
+export type RemoveBijeenkomstParticipantResult = {
+  __typename?: 'RemoveBijeenkomstParticipantResult';
+  success: Scalars['Boolean'];
+};
+
+export type RemoveParticipantInput = {
+  CursusDeelnameID?: InputMaybe<Scalars['Int']>;
+  CursusID?: InputMaybe<Scalars['Int']>;
+};
+
+export type RemoveParticipantResult = {
+  __typename?: 'RemoveParticipantResult';
+  success: Scalars['Boolean'];
+};
+
+export type SaveBijeenkomstInput = {
+  CursusID?: InputMaybe<Scalars['Int']>;
+  IsBesloten?: InputMaybe<Scalars['Boolean']>;
   MaximumCursisten: Scalars['Int'];
-  Opmerkingen?: Maybe<Scalars['SafeString']>;
+  Opmerkingen?: InputMaybe<Scalars['SafeString']>;
   Prijs: Scalars['Float'];
   Promotietekst: Scalars['SafeString'];
-  SessieID?: Maybe<Scalars['Int']>;
+  Sessies: Array<SaveBijeenkomstSessieInput>;
   Titel: Scalars['SafeString'];
   VakID: Scalars['Int'];
+};
+
+export type SaveBijeenkomstResult = {
+  __typename?: 'SaveBijeenkomstResult';
+  Cursus: Cursus;
+};
+
+export type SaveBijeenkomstSessieInput = {
+  Begintijd: Scalars['Date'];
+  CursusID: Scalars['Int'];
+  Datum: Scalars['Date'];
+  Docent?: InputMaybe<Scalars['SafeString']>;
+  Eindtijd: Scalars['Date'];
+  LokatieID: Scalars['Int'];
+  SessieID?: InputMaybe<Scalars['Int']>;
+};
+
+export type SaveExamInput = {
+  Begintijd: Scalars['Date'];
+  CursusID?: InputMaybe<Scalars['Int']>;
+  Datum: Scalars['Date'];
+  Docent?: InputMaybe<Scalars['SafeString']>;
+  Eindtijd: Scalars['Date'];
+  IsBesloten?: InputMaybe<Scalars['Boolean']>;
+  LokatieID: Scalars['Int'];
+  MaximumCursisten: Scalars['Int'];
+  Opmerkingen?: InputMaybe<Scalars['SafeString']>;
+  Prijs: Scalars['Float'];
+  Promotietekst: Scalars['SafeString'];
+  SessieID?: InputMaybe<Scalars['Int']>;
+  Titel: Scalars['SafeString'];
+  VakID: Scalars['Int'];
+};
+
+export type SaveExamResult = {
+  __typename?: 'SaveExamResult';
+  Cursus: Cursus;
+};
+
+export type SchemaRegel = {
+  __typename?: 'SchemaRegel';
+  docent?: Maybe<Scalars['String']>;
+  omschrijving?: Maybe<Scalars['String']>;
+  tijd?: Maybe<Scalars['String']>;
 };
 
 export type SearchExamOrganizerResult = {
@@ -1215,6 +1555,7 @@ export type Sessie = {
   Lokatie?: Maybe<Lokatie>;
   LokatieID: Scalars['Int'];
   LokatieToevoeging: Scalars['String'];
+  Monitors?: Maybe<Array<Maybe<Monitor>>>;
   Opmerkingen: Scalars['String'];
   PersoonIDAangemaakt?: Maybe<Scalars['Int']>;
   PersoonIDGewijzigd?: Maybe<Scalars['Int']>;
@@ -1225,7 +1566,7 @@ export type Sessie = {
 
 export enum SortDirectionEnum {
   Asc = 'ASC',
-  Desc = 'DESC'
+  Desc = 'DESC',
 }
 
 export type StatisticsPerOrganizer = {
@@ -1260,8 +1601,48 @@ export type Studieresultaat = {
 export enum StudieresultaatStatusEnum {
   Betaald = 'Betaald',
   Definitief = 'Definitief',
-  Voorlopig = 'Voorlopig'
+  Voorlopig = 'Voorlopig',
 }
+
+export type StudyProgress = {
+  __typename?: 'StudyProgress';
+  Certificering: Certificering;
+  Completed: Scalars['Boolean'];
+  CountedPoints: Scalars['Int'];
+  DonePoints: Scalars['Int'];
+  ParticipationPoints?: Maybe<Array<Maybe<ParticipationPoint>>>;
+  PointsToDo: Scalars['Int'];
+  RequiredPoints: Scalars['Int'];
+  RequiredPointsTodo: Scalars['Int'];
+  Studieresultaten?: Maybe<Array<Maybe<Studieresultaat>>>;
+};
+
+export type SubmitBijeenkomstParticipantsInput = {
+  CursusID?: InputMaybe<Scalars['Int']>;
+};
+
+export type SubmitBijeenkomstParticipantsResult = {
+  __typename?: 'SubmitBijeenkomstParticipantsResult';
+  success: Scalars['Boolean'];
+};
+
+export type SubmitParticipantsInput = {
+  CursusID?: InputMaybe<Scalars['Int']>;
+};
+
+export type SubmitParticipantsResult = {
+  __typename?: 'SubmitParticipantsResult';
+  success: Scalars['Boolean'];
+};
+
+export type SubmitToRemindoInput = {
+  CursusID?: InputMaybe<Scalars['Int']>;
+};
+
+export type SubmitToRemindoResult = {
+  __typename?: 'SubmitToRemindoResult';
+  success: Scalars['Boolean'];
+};
 
 export type TargetSettings = {
   organizerMargin: Scalars['Float'];
@@ -1295,7 +1676,7 @@ export type UpdateInvoiceStatusInput = {
   actionDate: Scalars['Date'];
   invoiceId: Scalars['Int'];
   isInvoiceCollection: Scalars['Boolean'];
-  remarks?: Maybe<Scalars['SafeString']>;
+  remarks?: InputMaybe<Scalars['SafeString']>;
   status: FactuurHistorieStatusEnum;
 };
 
@@ -1305,9 +1686,41 @@ export type UpdateInvoiceStatusResult = {
   success: Scalars['Boolean'];
 };
 
+export type UpdatePersoonHandelshuisvestigingForPersoonIdInput = {
+  DebiteurNr: Scalars['SafeString'];
+  PersoonHandelshuisVestigingID: Scalars['Int'];
+};
+
+export type UpdatePersoonVakgroepForPersoonIdInput = {
+  DebiteurNr: Scalars['SafeString'];
+  PersoonVakgroepID: Scalars['Int'];
+};
+
 export type UpdatePlanningResult = {
   __typename?: 'UpdatePlanningResult';
   planned: Scalars['Boolean'];
+};
+
+export type UploadBijeenkomstParticipantsExcelInput = {
+  CursusID?: InputMaybe<Scalars['Int']>;
+  file: Scalars['Upload'];
+};
+
+export type UploadBijeenkomstParticipantsExcelResult = {
+  __typename?: 'UploadBijeenkomstParticipantsExcelResult';
+  success: Scalars['Boolean'];
+  validationErrors?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type UploadParticipantsExcelInput = {
+  CursusID?: InputMaybe<Scalars['Int']>;
+  file: Scalars['Upload'];
+};
+
+export type UploadParticipantsExcelResult = {
+  __typename?: 'UploadParticipantsExcelResult';
+  success: Scalars['Boolean'];
+  validationErrors?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type Vaardigheid = {
@@ -1347,6 +1760,7 @@ export type Vak = {
   Promotietekst?: Maybe<Scalars['String']>;
   Samenhang?: Maybe<Scalars['String']>;
   Samenvatting?: Maybe<Scalars['String']>;
+  Schema?: Maybe<Array<Maybe<SchemaRegel>>>;
   Status: VakStatusEnum;
   ThemaID?: Maybe<Scalars['Int']>;
   ThemaNaam?: Maybe<Scalars['String']>;
@@ -1370,6 +1784,22 @@ export type VakDiscussie = {
   title?: Maybe<Scalars['String']>;
 };
 
+export enum VakExamenTypeEnum {
+  Ad = 'AD',
+  Agn = 'AGN',
+  Ak = 'AK',
+  Be = 'BE',
+  Bk = 'BK',
+  Bv = 'BV',
+  Dk = 'DK',
+  Ec = 'EC',
+  Ek = 'EK',
+  Et = 'ET',
+  HercertificeringsExamen = 'HERCERTIFICERINGS_EXAMEN',
+  StartExamen = 'START_EXAMEN',
+  Tb = 'TB',
+}
+
 export enum VakStatusEnum {
   Afgekeurd = 'Afgekeurd',
   Goedgekeurd = 'Goedgekeurd',
@@ -1377,7 +1807,7 @@ export enum VakStatusEnum {
   Ingediend = 'Ingediend',
   Ingetrokken = 'Ingetrokken',
   Voorlopig = 'Voorlopig',
-  WordtBeoordeeld = 'WordtBeoordeeld'
+  WordtBeoordeeld = 'WordtBeoordeeld',
 }
 
 export type Vakgroep = {
@@ -1423,13 +1853,9 @@ export type Visitatie = {
   DiscussieVisitaties?: Maybe<Array<Maybe<DiscussieVisitatie>>>;
   GewijzigdDoor?: Maybe<Scalars['String']>;
   Inspecteur?: Maybe<Persoon>;
-  /** Only available when sub-query is available */
   IsDeclarationPossible?: Maybe<Scalars['Boolean']>;
-  /** Only available when sub-query is available */
   IsDeclarationSubmitted?: Maybe<Scalars['Boolean']>;
-  /** Only available when sub-query is available */
   LastChangeBy?: Maybe<Scalars['String']>;
-  /** Only available when sub-query is available */
   LastChangeDate?: Maybe<Scalars['Date']>;
   PersoonID: Scalars['Int'];
   Rapport?: Maybe<Scalars['String']>;
@@ -1483,7 +1909,7 @@ export type VisitatieBeoordelingCategorieVraag = {
 export enum VisitatieStatusEnum {
   Ingediend = 'Ingediend',
   Ingepland = 'Ingepland',
-  RapportWordtOpgesteld = 'RapportWordtOpgesteld'
+  RapportWordtOpgesteld = 'RapportWordtOpgesteld',
 }
 
 export type VisitationDeclaration = {
@@ -1535,11 +1961,11 @@ export type VooropleidingCategorie = {
 
 export enum VrijstellingCertificaatStatusEnum {
   Betaald = 'Betaald',
-  VoorlopigBetaald = 'VoorlopigBetaald'
+  VoorlopigBetaald = 'VoorlopigBetaald',
 }
 
 export enum VrijstellingsVerzoekBetaalStatusEnum {
-  Betaald = 'Betaald'
+  Betaald = 'Betaald',
 }
 
 export enum VrijstellingsVerzoekStatusEnum {
@@ -1547,7 +1973,7 @@ export enum VrijstellingsVerzoekStatusEnum {
   Afgekeurd = 'Afgekeurd',
   Betaald = 'Betaald',
   Geannuleerd = 'Geannuleerd',
-  Goedgekeurd = 'Goedgekeurd'
+  Goedgekeurd = 'Goedgekeurd',
 }
 
 export type AddVisitationCommentInput = {
@@ -1555,9 +1981,29 @@ export type AddVisitationCommentInput = {
   visitatieId: Scalars['Int'];
 };
 
+export type AssignMonitorInput = {
+  MonitorID?: InputMaybe<Scalars['Int']>;
+  SessieID?: InputMaybe<Scalars['Int']>;
+};
+
 export type BasicPersonData = {
-  Email?: Maybe<Scalars['Email']>;
+  Email?: InputMaybe<Scalars['Email']>;
   PersoonID: Scalars['Int'];
+};
+
+export type BijeenkomstenListInput = {
+  code?: InputMaybe<Scalars['SafeString']>;
+  from?: InputMaybe<Scalars['Date']>;
+  locationId?: InputMaybe<Scalars['Int']>;
+  orderBy: OrderByArgs;
+  pageNumber: Scalars['Int'];
+  pageSize: Scalars['Int'];
+  status?: InputMaybe<CursusStatusEnum>;
+  title?: InputMaybe<Scalars['SafeString']>;
+  to?: InputMaybe<Scalars['Date']>;
+  vakId?: InputMaybe<Scalars['Int']>;
+  vakgroepId?: InputMaybe<Scalars['Int']>;
+  withoutParticipants?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type CheckForExistingPersonByBsnResult = {
@@ -1584,22 +2030,22 @@ export type CheckForExistingPersonByPersonDataResult = {
 
 export type ContactgegevensInput = {
   Adresregel1: Scalars['SafeString'];
-  Email?: Maybe<Scalars['SafeString']>;
+  Email?: InputMaybe<Scalars['SafeString']>;
   Huisnummer: Scalars['SafeString'];
-  HuisnummerToevoeging?: Maybe<Scalars['SafeString']>;
+  HuisnummerToevoeging?: InputMaybe<Scalars['SafeString']>;
   Land: Scalars['SafeString'];
   Postcode: Scalars['SafeString'];
-  Telefoon?: Maybe<Scalars['SafeString']>;
-  Website?: Maybe<Scalars['SafeString']>;
+  Telefoon?: InputMaybe<Scalars['SafeString']>;
+  Website?: InputMaybe<Scalars['SafeString']>;
   Woonplaats: Scalars['SafeString'];
 };
 
 export type CreateDeclarationInvoiceInput = {
-  NrOfDayParts?: Maybe<Scalars['Int']>;
-  NrOfKilometers?: Maybe<Scalars['Int']>;
-  Other?: Maybe<Scalars['Float']>;
-  OtherDescription?: Maybe<Scalars['SafeString']>;
-  PublicTransport?: Maybe<Scalars['Float']>;
+  NrOfDayParts?: InputMaybe<Scalars['Int']>;
+  NrOfKilometers?: InputMaybe<Scalars['Int']>;
+  Other?: InputMaybe<Scalars['Float']>;
+  OtherDescription?: InputMaybe<Scalars['SafeString']>;
+  PublicTransport?: InputMaybe<Scalars['Float']>;
   VisitatieID: Scalars['Int'];
 };
 
@@ -1609,7 +2055,7 @@ export type CreateLicenseInput = {
   /** licenseId that the new license should be based off from */
   isExtensionOf: Scalars['Int'];
   personId: Scalars['Int'];
-  remark?: Maybe<Scalars['SafeString']>;
+  remark?: InputMaybe<Scalars['SafeString']>;
   startDate: Scalars['Date'];
 };
 
@@ -1632,7 +2078,7 @@ export type CreatePersonByPersonData = {
   /** Max 100 chars */
   Adresregel1: Scalars['SafeString'];
   /** Max 100 chars */
-  Adresregel2?: Maybe<Scalars['SafeString']>;
+  Adresregel2?: InputMaybe<Scalars['SafeString']>;
   /** Email address is required */
   Email: Scalars['Email'];
   /**
@@ -1646,7 +2092,7 @@ export type CreatePersonByPersonData = {
   /** Max 20 chars */
   Huisnummer: Scalars['Int'];
   /** Max 20 chars */
-  HuisnummerToevoeging?: Maybe<Scalars['SafeString']>;
+  HuisnummerToevoeging?: InputMaybe<Scalars['SafeString']>;
   /** Use Landen endpoint */
   Land: Scalars['SafeString'];
   /** Use Nationaliteiten endpoint */
@@ -1654,15 +2100,20 @@ export type CreatePersonByPersonData = {
   /** Max 20 chars */
   Postcode: Scalars['SafeString'];
   /** Max 50 chars */
-  Tussenvoegsel?: Maybe<Scalars['SafeString']>;
+  Tussenvoegsel?: InputMaybe<Scalars['SafeString']>;
   /** Max 50 chars */
   Voorletters: Scalars['SafeString'];
   /** Max 100 chars */
   Woonplaats: Scalars['SafeString'];
 };
 
+export type CursusSessiesForHoogleraarInput = {
+  from?: InputMaybe<Scalars['Date']>;
+  to?: InputMaybe<Scalars['Date']>;
+};
+
 export type DecoupleLicenseInput = {
-  confirmationEmail?: Maybe<Scalars['String']>;
+  confirmationEmail?: InputMaybe<Scalars['String']>;
   /** Current XX + KBA license which should be decoupled */
   licenseId: Scalars['Int'];
 };
@@ -1674,40 +2125,41 @@ export type DecoupleLicenseResult = {
 };
 
 export type ExamSpecialtiesInput = {
-  /** ExamenInstellingID to filter on organizers */
-  examenInstellingId?: Maybe<Scalars['Int']>;
-  validOnly?: Maybe<Scalars['Boolean']>;
+  examenInstellingId?: InputMaybe<Scalars['Int']>;
+  validOnly?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ExamsInput = {
-  /** Filter on part of exam code */
-  examCode?: Maybe<Scalars['SafeString']>;
-  /** Date range, from */
-  from?: Maybe<Scalars['Date']>;
-  /** Filter on LocatieID */
-  locationId?: Maybe<Scalars['Int']>;
+  examCode?: InputMaybe<Scalars['SafeString']>;
+  from?: InputMaybe<Scalars['Date']>;
+  locationId?: InputMaybe<Scalars['Int']>;
   orderBy: OrderByArgs;
   pageNumber: Scalars['Int'];
   pageSize: Scalars['Int'];
-  /** Filter on status */
-  status?: Maybe<CursusStatusEnum>;
-  /** Filter on part of title */
-  title?: Maybe<Scalars['SafeString']>;
-  /** Date range, to */
-  to?: Maybe<Scalars['Date']>;
+  status?: InputMaybe<CursusStatusEnum>;
+  title?: InputMaybe<Scalars['SafeString']>;
+  to?: InputMaybe<Scalars['Date']>;
+  withoutParticipants?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ExemptionRequestResult = {
-  __typename?: 'exemptionRequestResult';
-  VrijstellingsVerzoekID: Scalars['Int'];
-  invoiceLink: Scalars['String'];
-  requestFormPdfLink: Scalars['String'];
+export type GetCursusDeelnemerInput = {
+  CursusID: Scalars['Int'];
+  PasNummer?: InputMaybe<Scalars['String']>;
+  PersoonID?: InputMaybe<Scalars['Int']>;
+};
+
+export type GetCursusDeelnemersInput = {
+  CursusID: Scalars['Int'];
+};
+
+export type GetCursusInfoForHoogleraarInput = {
+  cursusId?: InputMaybe<Scalars['Int']>;
 };
 
 export type IsLicenseValidForSpecialtyInput = {
-  courseId?: Maybe<Scalars['Int']>;
+  courseId?: InputMaybe<Scalars['Int']>;
   licenseId: Scalars['Int'];
-  specialtyId?: Maybe<Scalars['Int']>;
+  specialtyId?: InputMaybe<Scalars['Int']>;
 };
 
 export type IsLicenseValidForSpecialtyResult = {
@@ -1715,90 +2167,44 @@ export type IsLicenseValidForSpecialtyResult = {
   success: Scalars['Boolean'];
 };
 
-export type RegisterForCourseInput = {
-  birthPlace?: Maybe<Scalars['SafeString']>;
-  city?: Maybe<Scalars['SafeString']>;
-  code?: Maybe<Scalars['SafeString']>;
-  country?: Maybe<Scalars['SafeString']>;
-  courseDateTime?: Maybe<Scalars['Date']>;
+export type ManuallyProcessGraduatesResult = {
+  __typename?: 'manuallyProcessGraduatesResult';
+  message: Scalars['String'];
+};
+
+export type RegisterForCourseByHoogleraarInput = {
   courseId: Scalars['Int'];
-  email?: Maybe<Scalars['Email']>;
-  houseNr?: Maybe<Scalars['SafeString']>;
-  houseNrExtension?: Maybe<Scalars['SafeString']>;
-  invoiceAddress?: Maybe<Scalars['SafeString']>;
-  isDigitalSpecialty: Scalars['Boolean'];
-  knowledgeArea?: Maybe<Scalars['SafeString']>;
   licenseId: Scalars['Int'];
-  phoneNr?: Maybe<Scalars['SafeString']>;
-  specialtyId?: Maybe<Scalars['Int']>;
-  street?: Maybe<Scalars['SafeString']>;
+  persoonId: Scalars['Int'];
+};
+
+export type RegisterForCourseInput = {
+  city?: InputMaybe<Scalars['SafeString']>;
+  code?: InputMaybe<Scalars['SafeString']>;
+  country?: InputMaybe<Scalars['SafeString']>;
+  courseDateTime?: InputMaybe<Scalars['Date']>;
+  courseId: Scalars['Int'];
+  email?: InputMaybe<Scalars['Email']>;
+  houseNr?: InputMaybe<Scalars['SafeString']>;
+  houseNrExtension?: InputMaybe<Scalars['SafeString']>;
+  invoiceAddress?: InputMaybe<Scalars['SafeString']>;
+  isDigitalSpecialty: Scalars['Boolean'];
+  knowledgeArea?: InputMaybe<Scalars['SafeString']>;
+  licenseId: Scalars['Int'];
+  phoneNr?: InputMaybe<Scalars['SafeString']>;
+  specialtyId?: InputMaybe<Scalars['Int']>;
+  street?: InputMaybe<Scalars['SafeString']>;
   title: Scalars['SafeString'];
-  zipcode?: Maybe<Scalars['SafeString']>;
-};
-
-export type RequestAdviseCertificateInput = {
-  /** Current license that the new license should be based off from */
-  CertificeringID: Scalars['Int'];
-  /** Email address is required */
-  Email: Scalars['Email'];
-  /** Date from which the user is working as advisor */
-  advisorSince: Scalars['Date'];
-  /** File1 to upload werkgeversverklaring */
-  file1: Scalars['Upload'];
-  /** File2 to upload kvk form */
-  file2?: Maybe<Scalars['Upload']>;
-  /** Wants to keep DB license */
-  keepDBLicense: Scalars['Boolean'];
-  /** Wants to keep KBA-GB license */
-  keepKBAGBLicense: Scalars['Boolean'];
-  /** Wants to keep KBA license */
-  keepKBALicense: Scalars['Boolean'];
-  /** Optional remarks */
-  remarks?: Maybe<Scalars['SafeString']>;
-};
-
-export type RequestAdviseCertificatePersonDataInput = {
-  /** Max 50 chars */
-  Achternaam: Scalars['SafeString'];
-  /** Max 100 chars */
-  Adresregel1: Scalars['SafeString'];
-  /** Max 100 chars */
-  Adresregel2?: Maybe<Scalars['SafeString']>;
-  /** BSN can be null if not available, can be 8 or 9 digits long */
-  BSN?: Maybe<Scalars['Int']>;
-  /**
-   * Use i.e. `new Date(Date.UTC(1955, 8, 3)).getTime()`
-   * which is: 3 sept 1955 00:00:00 GMT+2 (CEST)
-   * Needed to match SQL Server database field value for a Date field
-   */
-  Geboortedatum: Scalars['Date'];
-  /** Can only be 'o', 'm, 'v' */
-  Geslacht: Scalars['SafeString'];
-  /** Max 20 chars */
-  Huisnummer: Scalars['SafeString'];
-  /** Max 20 chars */
-  HuisnummerToevoeging?: Maybe<Scalars['SafeString']>;
-  /** Use Landen endpoint */
-  Land: Scalars['SafeString'];
-  /** Use Nationaliteiten endpoint */
-  Nationaliteit: Scalars['SafeString'];
-  /** Max 20 chars */
-  Postcode: Scalars['SafeString'];
-  /** Max 50 chars */
-  Tussenvoegsel?: Maybe<Scalars['SafeString']>;
-  /** Max 50 chars */
-  Voorletters: Scalars['SafeString'];
-  /** Max 100 chars */
-  Woonplaats: Scalars['SafeString'];
+  zipcode?: InputMaybe<Scalars['SafeString']>;
 };
 
 export type RequestDuplicateInput = {
   /** Nr of cards */
-  count?: Maybe<Scalars['Int']>;
+  count?: InputMaybe<Scalars['Int']>;
   /** Licenses which should be duplicated */
-  licenseIds: Array<Maybe<Scalars['Int']>>;
+  licenseIds: Array<InputMaybe<Scalars['Int']>>;
   /** Remark for invoice (required for anything other than KBA) */
-  remark?: Maybe<Scalars['SafeString']>;
+  remark?: InputMaybe<Scalars['SafeString']>;
 };
 
 export type RequestDuplicateResult = {
@@ -1816,7 +2222,7 @@ export type RequestLicenseInput = {
   /** License the user is requesting, based on the limited list of pre-educations */
   CertificaatID: Scalars['Int'];
   /** Optional: Current license that the new license should be based off from */
-  CertificeringID?: Maybe<Scalars['Int']>;
+  CertificeringID?: InputMaybe<Scalars['Int']>;
   /**
    * Date of pre-education result received
    * Must be between max 5 years in past or today
@@ -1831,17 +2237,17 @@ export type RequestLicenseInput = {
    * File to upload 2.
    * For normal license request: Diploma
    */
-  file2?: Maybe<Scalars['Upload']>;
+  file2?: InputMaybe<Scalars['Upload']>;
   /**
    * File to upload 3.
    * For normal license request: cijferlijst
    * For registration certificate: none
    */
-  file3?: Maybe<Scalars['Upload']>;
+  file3?: InputMaybe<Scalars['Upload']>;
   /** The Id of the pre-education (vooropleiding) */
   preEducationId: Scalars['Int'];
   /** Optional remarks */
-  remarks?: Maybe<Scalars['SafeString']>;
+  remarks?: InputMaybe<Scalars['SafeString']>;
 };
 
 export type RequestLicenseResult = {
@@ -1852,35 +2258,63 @@ export type RequestLicenseResult = {
 };
 
 export type SaveLocationInput = {
-  Contactgegevens?: Maybe<ContactgegevensInput>;
-  ContactgegevensID?: Maybe<Scalars['Int']>;
-  ExamenInstellingID?: Maybe<Scalars['Int']>;
+  Contactgegevens?: InputMaybe<ContactgegevensInput>;
+  ContactgegevensID?: InputMaybe<Scalars['Int']>;
+  ExamenInstellingID?: InputMaybe<Scalars['Int']>;
   IsActief: Scalars['Boolean'];
-  LokatieID?: Maybe<Scalars['Int']>;
+  LokatieID?: InputMaybe<Scalars['Int']>;
   Naam: Scalars['SafeString'];
-  Routebeschrijving?: Maybe<Scalars['SafeString']>;
-  VakgroepID?: Maybe<Scalars['Int']>;
+  Routebeschrijving?: InputMaybe<Scalars['SafeString']>;
+  VakgroepID?: InputMaybe<Scalars['Int']>;
+};
+
+export type SaveMonitorInput = {
+  Achternaam: Scalars['SafeString'];
+  Email: Scalars['Email'];
+  ExamenInstellingID?: InputMaybe<Scalars['Int']>;
+  Geslacht: Scalars['SafeString'];
+  MonitorID?: InputMaybe<Scalars['Int']>;
+  Tussenvoegsel?: InputMaybe<Scalars['SafeString']>;
+  Voornaam: Scalars['SafeString'];
+};
+
+export type SearchBijeenkomstInput = {
+  cursusId: Scalars['Int'];
+};
+
+export type SearchCourseSessionsForHoogleraarInput = {
+  competenceId?: InputMaybe<Scalars['Int']>;
+  currentCourseId?: InputMaybe<Scalars['Int']>;
+  distanceRadius?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Scalars['Date']>;
+  hoogleraarId?: InputMaybe<Scalars['Int']>;
+  isOnlineCourse: Scalars['Boolean'];
+  isWebinar: Scalars['Boolean'];
+  knowledgeAreaId?: InputMaybe<Scalars['Int']>;
+  themeId?: InputMaybe<Scalars['Int']>;
+  to?: InputMaybe<Scalars['Date']>;
+  zipcodeNumbers?: InputMaybe<Scalars['Int']>;
 };
 
 export type SearchCourseSessionsInput = {
-  /** CompetenceId to filter on */
-  competenceId?: Maybe<Scalars['Int']>;
-  /** Current course (to search others) */
-  currentCourseId?: Maybe<Scalars['Int']>;
-  /** Radius in Kilometers */
-  distanceRadius?: Maybe<Scalars['Int']>;
-  /** Date range, from */
-  from?: Maybe<Scalars['Date']>;
-  /** Is search for online courses only (default = false) */
+  competenceId?: InputMaybe<Scalars['Int']>;
+  currentCourseId?: InputMaybe<Scalars['Int']>;
+  distanceRadius?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Scalars['Date']>;
   isOnlineCourse: Scalars['Boolean'];
-  /** KnowledgeAreaId to filter on */
-  knowledgeAreaId?: Maybe<Scalars['Int']>;
-  /** ThemeId to filter on */
-  themeId?: Maybe<Scalars['Int']>;
-  /** Date range, to */
-  to?: Maybe<Scalars['Date']>;
-  /** Zipcode, numbers only */
-  zipcodeNumbers?: Maybe<Scalars['Int']>;
+  isWebinar: Scalars['Boolean'];
+  knowledgeAreaId?: InputMaybe<Scalars['Int']>;
+  themeId?: InputMaybe<Scalars['Int']>;
+  to?: InputMaybe<Scalars['Date']>;
+  zipcodeNumbers?: InputMaybe<Scalars['Int']>;
+};
+
+export type SearchCursusDeelnemersInput = {
+  CursusID: Scalars['Int'];
+  geboortejaar?: InputMaybe<Scalars['String']>;
+  naam?: InputMaybe<Scalars['String']>;
+  pasnummer?: InputMaybe<Scalars['String']>;
+  postcode?: InputMaybe<Scalars['String']>;
 };
 
 export type SearchExamInput = {
@@ -1888,60 +2322,76 @@ export type SearchExamInput = {
 };
 
 export type SearchLocationsInput = {
-  ExamenInstellingID?: Maybe<Scalars['Int']>;
-  VakgroepID?: Maybe<Scalars['Int']>;
+  ExamenInstellingID?: InputMaybe<Scalars['Int']>;
+  VakgroepID?: InputMaybe<Scalars['Int']>;
+};
+
+export type SearchMonitorsInput = {
+  ExamenInstellingID?: InputMaybe<Scalars['Int']>;
 };
 
 export type SearchSpecialtyInput = {
-  /** CompetenceId to filter on */
-  competenceId?: Maybe<Scalars['Int']>;
-  /** Is search for online courses only (default = false) */
+  competenceId?: InputMaybe<Scalars['Int']>;
   isOnlineCourse: Scalars['Boolean'];
-  /** KnowledgeAreaId to filter on */
-  knowledgeAreaId?: Maybe<Scalars['Int']>;
-  /** SpecialtyId */
-  specialtyId?: Maybe<Scalars['Int']>;
-  /** ThemeId to filter on */
-  themeId?: Maybe<Scalars['Int']>;
+  knowledgeAreaId?: InputMaybe<Scalars['Int']>;
+  specialtyId?: InputMaybe<Scalars['Int']>;
+  themeId?: InputMaybe<Scalars['Int']>;
 };
 
 export type SpecialtiesInput = {
-  /** VakgroepID to filter on organizers */
-  vakgroepId?: Maybe<Scalars['Int']>;
+  vakgroepId?: InputMaybe<Scalars['Int']>;
+};
+
+export type UnRegisterForCourseByCourseIdInput = {
+  cursusId: Scalars['Int'];
+  dateTime: Scalars['Date'];
+};
+
+export type UnassignMonitorInput = {
+  MonitorID?: InputMaybe<Scalars['Int']>;
+  SessieID?: InputMaybe<Scalars['Int']>;
+};
+
+export type UnregisterForCourseByHoogleraarInput = {
+  CursusDeelnameID: Scalars['Int'];
+};
+
+export type UpdateContactgegevensInput = {
+  Email?: InputMaybe<Scalars['SafeString']>;
+  EmailWerkgever?: InputMaybe<Scalars['SafeString']>;
+  Telefoon?: InputMaybe<Scalars['SafeString']>;
 };
 
 export type UpdateVisitationReportInput = {
-  DatumRapport?: Maybe<Scalars['Date']>;
+  DatumRapport?: InputMaybe<Scalars['Date']>;
   Rapport: Scalars['SafeString'];
   Rapportcijfer: Scalars['Int'];
   Status: VisitatieStatusEnum;
   VisitatieID: Scalars['Int'];
   VolgensIntentieAanbod: Scalars['Boolean'];
-  /** JSON string with ratings */
   VragenJson: Scalars['SafeString'];
-  /** JSON string with ratings */
-  ratings?: Maybe<Array<VisitatieBeoordelingCategorieInput>>;
+  ratings?: InputMaybe<Array<VisitatieBeoordelingCategorieInput>>;
 };
 
 export type VisitatieBeoordelingCategorieInput = {
   CategorieNaam: Scalars['String'];
   CategorieTemplateID: Scalars['Int'];
-  Cijfer?: Maybe<Scalars['Float']>;
-  TotaalPunten?: Maybe<Scalars['Float']>;
+  Cijfer?: InputMaybe<Scalars['Float']>;
+  TotaalPunten?: InputMaybe<Scalars['Float']>;
   VanafDatum: Scalars['Date'];
   Versie: Scalars['String'];
   VisitatieBeoordelingCategorieID: Scalars['ID'];
   VisitatieID: Scalars['Int'];
-  Vragen?: Maybe<Array<Maybe<VisitatieBeoordelingCategorieVraagInput>>>;
+  Vragen?: InputMaybe<Array<InputMaybe<VisitatieBeoordelingCategorieVraagInput>>>;
   Weging: Scalars['Float'];
 };
 
 export type VisitatieBeoordelingCategorieVraagInput = {
   CategorieTemplateID: Scalars['Int'];
-  Cijfer?: Maybe<Scalars['Float']>;
+  Cijfer?: InputMaybe<Scalars['Float']>;
   Naam: Scalars['String'];
-  Toelichting?: Maybe<Scalars['String']>;
-  TotaalPunten?: Maybe<Scalars['Float']>;
+  Toelichting?: InputMaybe<Scalars['String']>;
+  TotaalPunten?: InputMaybe<Scalars['Float']>;
   VanafDatum: Scalars['Date'];
   Versie: Scalars['String'];
   VisitatieBeoordelingCategorieID: Scalars['ID'];
@@ -1955,78 +2405,139 @@ export type VisitationInput = {
 };
 
 export type VisitationsInput = {
-  /** Filter on part of course code */
-  courseCode?: Maybe<Scalars['SafeString']>;
-  /** Date range, from */
-  from?: Maybe<Scalars['Date']>;
+  courseCode?: InputMaybe<Scalars['SafeString']>;
+  from?: InputMaybe<Scalars['Date']>;
   orderBy: OrderByArgs;
   pageNumber: Scalars['Int'];
   pageSize: Scalars['Int'];
-  /** Filter on status */
-  status?: Maybe<VisitatieStatusEnum>;
-  /** Filter on part of title */
-  title?: Maybe<Scalars['SafeString']>;
-  /** Date range, to */
-  to?: Maybe<Scalars['Date']>;
+  status?: InputMaybe<VisitatieStatusEnum>;
+  title?: InputMaybe<Scalars['SafeString']>;
+  to?: InputMaybe<Scalars['Date']>;
 };
 
-export type GetMyAndDuplicatePriceQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetMyAndDuplicatePriceQueryVariables = Exact<{ [key: string]: never }>;
 
+export type GetMyAndDuplicatePriceQuery = {
+  my?: {
+    __typename?: 'My';
+    Certificeringen?: Array<{
+      __typename?: 'Certificering';
+      CertificeringID: number;
+      CertificaatID: number;
+      NummerWeergave: string;
+      BeginDatum: Date;
+      EindDatum: Date;
+      Status: CertificeringStatusEnum;
+      Certificaat?: { __typename?: 'Certificaat'; Naam: string };
+      Passen?: Array<{
+        __typename?: 'Pas';
+        PasID: number;
+        DatumAanvraag: Date;
+        DatumUitgeleverd?: Date;
+        Aantal: number;
+        Status: PasStatusEnum;
+        Geadresseerde?: string;
+        PasRetouren?: Array<{ __typename?: 'PasRetour'; PasID: number; DatumRetour: Date }>;
+      }>;
+    }>;
+  };
+  tariefDuplicaat?: { __typename?: 'TotaalExtBtwTarief'; TotaalExtBtw?: number };
+};
 
-export type GetMyAndDuplicatePriceQuery = { my?: { __typename?: 'My', Certificeringen?: Array<{ __typename?: 'Certificering', CertificeringID: number, NummerWeergave: string, BeginDatum: Date, EindDatum: Date, Status: CertificeringStatusEnum, Certificaat?: { __typename?: 'Certificaat', Naam: string } | null | undefined, Passen?: Array<{ __typename?: 'Pas', PasID: number, DatumAanvraag: Date, DatumUitgeleverd?: Date | null | undefined, Aantal: number, Status: PasStatusEnum, Geadresseerde?: string | null | undefined, PasRetouren?: Array<{ __typename?: 'PasRetour', PasID: number, DatumRetour: Date } | null | undefined> | null | undefined } | null | undefined> | null | undefined } | null | undefined> | null | undefined } | null | undefined, tariefDuplicaat?: { __typename?: 'TotaalExtBtwTarief', TotaalExtBtw?: number | null | undefined } | null | undefined };
+export type CertificeringenFieldsFragment = {
+  __typename?: 'Certificering';
+  CertificeringID: number;
+  CertificaatID: number;
+  NummerWeergave: string;
+  BeginDatum: Date;
+  EindDatum: Date;
+  Status: CertificeringStatusEnum;
+  Certificaat?: { __typename?: 'Certificaat'; Naam: string };
+  Passen?: Array<{
+    __typename?: 'Pas';
+    PasID: number;
+    DatumAanvraag: Date;
+    DatumUitgeleverd?: Date;
+    Aantal: number;
+    Status: PasStatusEnum;
+    Geadresseerde?: string;
+    PasRetouren?: Array<{ __typename?: 'PasRetour'; PasID: number; DatumRetour: Date }>;
+  }>;
+};
 
-export type CertificeringenFieldsFragment = { __typename?: 'Certificering', CertificeringID: number, NummerWeergave: string, BeginDatum: Date, EindDatum: Date, Status: CertificeringStatusEnum, Certificaat?: { __typename?: 'Certificaat', Naam: string } | null | undefined, Passen?: Array<{ __typename?: 'Pas', PasID: number, DatumAanvraag: Date, DatumUitgeleverd?: Date | null | undefined, Aantal: number, Status: PasStatusEnum, Geadresseerde?: string | null | undefined, PasRetouren?: Array<{ __typename?: 'PasRetour', PasID: number, DatumRetour: Date } | null | undefined> | null | undefined } | null | undefined> | null | undefined };
-
-export type PasFieldsFragment = { __typename?: 'Pas', PasID: number, DatumAanvraag: Date, DatumUitgeleverd?: Date | null | undefined, Aantal: number, Status: PasStatusEnum, Geadresseerde?: string | null | undefined, PasRetouren?: Array<{ __typename?: 'PasRetour', PasID: number, DatumRetour: Date } | null | undefined> | null | undefined };
+export type PasFieldsFragment = {
+  __typename?: 'Pas';
+  PasID: number;
+  DatumAanvraag: Date;
+  DatumUitgeleverd?: Date;
+  Aantal: number;
+  Status: PasStatusEnum;
+  Geadresseerde?: string;
+  PasRetouren?: Array<{ __typename?: 'PasRetour'; PasID: number; DatumRetour: Date }>;
+};
 
 export type RequestDuplicateMutationVariables = Exact<{
   input: RequestDuplicateInput;
 }>;
 
-
-export type RequestDuplicateMutation = { requestDuplicate: { __typename?: 'requestDuplicateResult', invoiceLink: string, cards: Array<{ __typename?: 'Pas', PasID: number, DatumAanvraag: Date, Status: PasStatusEnum, Aantal: number }> } };
+export type RequestDuplicateMutation = {
+  requestDuplicate: {
+    __typename?: 'requestDuplicateResult';
+    invoiceLink: string;
+    cards: Array<{
+      __typename?: 'Pas';
+      PasID: number;
+      DatumAanvraag: Date;
+      Status: PasStatusEnum;
+      Aantal: number;
+    }>;
+  };
+};
 
 export const PasFieldsFragmentDoc = gql`
-    fragment PasFields on Pas {
-  PasID
-  DatumAanvraag
-  DatumUitgeleverd
-  Aantal
-  Status
-  Geadresseerde
-  PasRetouren {
+  fragment PasFields on Pas {
     PasID
-    DatumRetour
-  }
-}
-    `;
-export const CertificeringenFieldsFragmentDoc = gql`
-    fragment CertificeringenFields on Certificering {
-  CertificeringID
-  NummerWeergave
-  BeginDatum
-  EindDatum
-  Status
-  Certificaat {
-    Naam
-  }
-  Passen {
-    ...PasFields
-  }
-}
-    ${PasFieldsFragmentDoc}`;
-export const GetMyAndDuplicatePriceDocument = gql`
-    query getMyAndDuplicatePrice {
-  my {
-    Certificeringen(inclusiefPassen: true, alleenGeldig: true) {
-      ...CertificeringenFields
+    DatumAanvraag
+    DatumUitgeleverd
+    Aantal
+    Status
+    Geadresseerde
+    PasRetouren {
+      PasID
+      DatumRetour
     }
   }
-  tariefDuplicaat {
-    TotaalExtBtw
+`;
+export const CertificeringenFieldsFragmentDoc = gql`
+  fragment CertificeringenFields on Certificering {
+    CertificeringID
+    CertificaatID
+    NummerWeergave
+    BeginDatum
+    EindDatum
+    Status
+    Certificaat {
+      Naam
+    }
+    Passen {
+      ...PasFields
+    }
   }
-}
-    ${CertificeringenFieldsFragmentDoc}`;
+  ${PasFieldsFragmentDoc}
+`;
+export const GetMyAndDuplicatePriceDocument = gql`
+  query getMyAndDuplicatePrice {
+    my {
+      Certificeringen(inclusiefPassen: true, alleenGeldig: true) {
+        ...CertificeringenFields
+      }
+    }
+    tariefDuplicaat {
+      TotaalExtBtw
+    }
+  }
+  ${CertificeringenFieldsFragmentDoc}
+`;
 
 /**
  * __useGetMyAndDuplicatePriceQuery__
@@ -2043,31 +2554,57 @@ export const GetMyAndDuplicatePriceDocument = gql`
  *   },
  * });
  */
-export function useGetMyAndDuplicatePriceQuery(baseOptions?: Apollo.QueryHookOptions<GetMyAndDuplicatePriceQuery, GetMyAndDuplicatePriceQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMyAndDuplicatePriceQuery, GetMyAndDuplicatePriceQueryVariables>(GetMyAndDuplicatePriceDocument, options);
-      }
-export function useGetMyAndDuplicatePriceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyAndDuplicatePriceQuery, GetMyAndDuplicatePriceQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMyAndDuplicatePriceQuery, GetMyAndDuplicatePriceQueryVariables>(GetMyAndDuplicatePriceDocument, options);
-        }
-export type GetMyAndDuplicatePriceQueryHookResult = ReturnType<typeof useGetMyAndDuplicatePriceQuery>;
-export type GetMyAndDuplicatePriceLazyQueryHookResult = ReturnType<typeof useGetMyAndDuplicatePriceLazyQuery>;
-export type GetMyAndDuplicatePriceQueryResult = Apollo.QueryResult<GetMyAndDuplicatePriceQuery, GetMyAndDuplicatePriceQueryVariables>;
+export function useGetMyAndDuplicatePriceQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetMyAndDuplicatePriceQuery,
+    GetMyAndDuplicatePriceQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetMyAndDuplicatePriceQuery, GetMyAndDuplicatePriceQueryVariables>(
+    GetMyAndDuplicatePriceDocument,
+    options,
+  );
+}
+export function useGetMyAndDuplicatePriceLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetMyAndDuplicatePriceQuery,
+    GetMyAndDuplicatePriceQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetMyAndDuplicatePriceQuery, GetMyAndDuplicatePriceQueryVariables>(
+    GetMyAndDuplicatePriceDocument,
+    options,
+  );
+}
+export type GetMyAndDuplicatePriceQueryHookResult = ReturnType<
+  typeof useGetMyAndDuplicatePriceQuery
+>;
+export type GetMyAndDuplicatePriceLazyQueryHookResult = ReturnType<
+  typeof useGetMyAndDuplicatePriceLazyQuery
+>;
+export type GetMyAndDuplicatePriceQueryResult = Apollo.QueryResult<
+  GetMyAndDuplicatePriceQuery,
+  GetMyAndDuplicatePriceQueryVariables
+>;
 export const RequestDuplicateDocument = gql`
-    mutation requestDuplicate($input: requestDuplicateInput!) {
-  requestDuplicate(input: $input) {
-    invoiceLink
-    cards {
-      PasID
-      DatumAanvraag
-      Status
-      Aantal
+  mutation requestDuplicate($input: requestDuplicateInput!) {
+    requestDuplicate(input: $input) {
+      invoiceLink
+      cards {
+        PasID
+        DatumAanvraag
+        Status
+        Aantal
+      }
     }
   }
-}
-    `;
-export type RequestDuplicateMutationFn = Apollo.MutationFunction<RequestDuplicateMutation, RequestDuplicateMutationVariables>;
+`;
+export type RequestDuplicateMutationFn = Apollo.MutationFunction<
+  RequestDuplicateMutation,
+  RequestDuplicateMutationVariables
+>;
 
 /**
  * __useRequestDuplicateMutation__
@@ -2086,10 +2623,21 @@ export type RequestDuplicateMutationFn = Apollo.MutationFunction<RequestDuplicat
  *   },
  * });
  */
-export function useRequestDuplicateMutation(baseOptions?: Apollo.MutationHookOptions<RequestDuplicateMutation, RequestDuplicateMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RequestDuplicateMutation, RequestDuplicateMutationVariables>(RequestDuplicateDocument, options);
-      }
+export function useRequestDuplicateMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RequestDuplicateMutation,
+    RequestDuplicateMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RequestDuplicateMutation, RequestDuplicateMutationVariables>(
+    RequestDuplicateDocument,
+    options,
+  );
+}
 export type RequestDuplicateMutationHookResult = ReturnType<typeof useRequestDuplicateMutation>;
 export type RequestDuplicateMutationResult = Apollo.MutationResult<RequestDuplicateMutation>;
-export type RequestDuplicateMutationOptions = Apollo.BaseMutationOptions<RequestDuplicateMutation, RequestDuplicateMutationVariables>;
+export type RequestDuplicateMutationOptions = Apollo.BaseMutationOptions<
+  RequestDuplicateMutation,
+  RequestDuplicateMutationVariables
+>;

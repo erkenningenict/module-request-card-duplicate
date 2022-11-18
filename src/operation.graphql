@@ -11,6 +11,7 @@ query getMyAndDuplicatePrice {
 
 fragment CertificeringenFields on Certificering {
   CertificeringID
+  CertificaatID
   NummerWeergave
   BeginDatum
   EindDatum

@@ -37,7 +37,17 @@ export const App: React.FC<any> = () => {
   }
   const sortedLicenses: CertificeringenFieldsFragment[] = [
     ...data?.my.Certificeringen?.filter(
-      (license) => license?.Status === CertificeringStatusEnum.Geldig,
+      (license) =>
+        license?.Status === CertificeringStatusEnum.Geldig &&
+        license?.CertificaatID !== 22 &&
+        license?.CertificaatID !== 23 &&
+        license?.CertificaatID !== 24 &&
+        license?.CertificaatID !== 25 &&
+        license?.CertificaatID !== 26 &&
+        license?.CertificaatID !== 27 &&
+        license?.CertificaatID !== 28 &&
+        license?.CertificaatID !== 1 &&
+        license?.CertificaatID !== 29,
     ).sort((a, b) =>
       new Date(a?.BeginDatum || new Date()) > new Date(b?.BeginDatum || new Date()) ? -1 : 1,
     ),
