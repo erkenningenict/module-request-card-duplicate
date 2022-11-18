@@ -95,7 +95,7 @@ const CardsContainer: React.FC<{
           <>
             <p>
               Kies de licentie waarvoor u een duplicaat wilt bestellen (alleen geldige passen worden
-              getoond).
+              getoond en KBA duplicaat pasjes kunt u niet meer bestellen).
             </p>
 
             <Select
